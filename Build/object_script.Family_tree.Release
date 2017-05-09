@@ -1,0 +1,14 @@
+INPUT(
+./release\family.o
+./release\main.o
+./release\mainwindow.o
+./release\person.o
+./release\treeleaf.o
+./release\view.o
+./release\widget.o
+./release\qrc_resources.o
+./release\moc_family.o
+./release\moc_mainwindow.o
+./release\moc_view.o
+./release\moc_widget.o
+);
