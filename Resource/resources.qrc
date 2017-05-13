@@ -1,5 +1,9 @@
 <RCC>
     <qresource prefix="/">
         <file>no_photo.jpg</file>
+        <file>1.jpeg</file>
+        <file>2.jpg</file>
+        <file>3.jpg</file>
+        <file>4.jpg</file>
     </qresource>
 </RCC>

@@ -18,14 +18,14 @@ SOURCES +=    Source/family.cpp \
     Source/person.cpp \
     Source/treeleaf.cpp \
     Source/view.cpp \
-    Source/widget.cpp
+    Source/info.cpp
 
 HEADERS  +=    Source/family.h \
     Source/mainwindow.h \
     Source/person.h \
     Source/treeleaf.h \
     Source/view.h \
-    Source/widget.h
+    Source/info.h
 
 RESOURCES += \
     Resource/resources.qrc

@@ -1,34 +1,31 @@
 #ifndef TREELEAF_H
 #define TREELEAF_H
 
-#include <QColor>
 #include <QGraphicsItem>
 #include <QString>
-#include <QPixmap>
-#include <QLabel>
+#include <QImage>
 
-class TreeLeaf : public QGraphicsItem
+class TreeLeaf: public QGraphicsItem
 {
 public:
-	 TreeLeaf(QString Name, QString photoPath, int x, int y);
+	TreeLeaf(QString fio, QString path, int xx,int yy);
 
-	 QRectF boundingRect() const Q_DECL_OVERRIDE;
-	 QPainterPath shape() const Q_DECL_OVERRIDE;
-	 void paint(QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget) Q_DECL_OVERRIDE;
+	QRectF boundingRect() const override;
+	QPainterPath shape() const override;
+	void paint(QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget) override;
 
 protected:
-	 void mousePressEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
-	 void mouseMoveEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
-	 void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
+//	void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+//	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
+//	void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+	void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
 
 private:
-	 int x;
-	 int y;
-	 QString name;
-//	 QLabel *photo;
-	 QPixmap photo;
-	 QVector<QPointF> stuff;
-};
+	QString name;
+	QImage photo;
+	int x;
+	int y;
 
+};
 
 #endif // TREELEAF_H

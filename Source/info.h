@@ -1,5 +1,5 @@
-#ifndef WIDGET_H
-#define WIDGET_H
+#ifndef INFO_H
+#define INFO_H
 
 #include <QWidget>
 #include <QLabel>
@@ -18,20 +18,23 @@ class QLineEdit;
 
 QT_END_NAMESPACE
 
-class Widget : public QWidget
+class Info : public QWidget
 {
 	Q_OBJECT
 private:
 
-	QSplitter * vertical;
 	QLabel *portraitLabel;
 	QLineEdit *fioEdit;
 	QLineEdit *birthEdit;
 	QPlainTextEdit *infoText;
+	QLineEdit *birthPlace;
+
+public slots:
+	void changePic();
 
 public:
-	Widget(QWidget *parent = 0);
-	~Widget();
+	Info(QWidget *parent = 0);
+	~Info();
 };
 
-#endif // WIDGET_H
+#endif // INFO_H

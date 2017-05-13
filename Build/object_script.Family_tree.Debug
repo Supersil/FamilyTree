@@ -5,10 +5,10 @@ INPUT(
 ./debug\person.o
 ./debug\treeleaf.o
 ./debug\view.o
-./debug\widget.o
+./debug\info.o
 ./debug\qrc_resources.o
 ./debug\moc_family.o
 ./debug\moc_mainwindow.o
 ./debug\moc_view.o
-./debug\moc_widget.o
+./debug\moc_info.o
 );

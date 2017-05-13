@@ -1,61 +1,59 @@
 #include "treeleaf.h"
 
-
 #include <QtWidgets>
+#include <QMenu>
 
-TreeLeaf::TreeLeaf(QString Name, QString photoPath, int x, int y)
+TreeLeaf::TreeLeaf(QString fio, QString path, int xx, int yy): photo(path),
+x(xx), y(yy)
 {
-	this->x = x;
-	this->y = y;
-	this->name = Name;
-	this->photo.load(photoPath);
-	photo.scaledToWidth(50);
-//	photo = new QLabel;
-//	photo->setBackgroundRole(QPalette::Base);
-//	photo->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-//	photo->setScaledContents(true);
-
-//	QImage img(photoPath);
-//	photo->setPixmap(QPixmap::fromImage(img));
-
-//	setFlags(ItemIsSelectable | ItemIsMovable);
-//	setAcceptHoverEvents(true);
+	name = fio;
 }
+
 
 QRectF TreeLeaf::boundingRect() const
 {
-	return QRectF(-photo.width()/2, -photo.height()/2, photo.width(), photo.height());
+	 return QRectF(0, 0, 300, 400);
 }
 
 QPainterPath TreeLeaf::shape() const
 {
 	 QPainterPath path;
+	 path.addRect(0, 0, 300, 400);
 	 return path;
+}
+
+void TreeLeaf::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
+{
+	QMenu menu;
+	 QAction *removeAction = menu.addAction("Remove");
+	 QAction *markAction = menu.addAction("Mark");
+	 QAction *selectedAction = menu.exec(event->screenPos());
+	 if (selectedAction)
+		selectedAction = 0;
+
 }
 
 void TreeLeaf::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-	Q_UNUSED(widget);
-	painter->drawPixmap(0,0,photo.width(),photo.height(),photo);
-	painter->drawText(0,0+photo.height(),name);
+	 Q_UNUSED(widget);
+
+	QTextOption to;
+	to.setAlignment(Qt::AlignCenter);
+	to.setWrapMode(QTextOption::WordWrap);
+	QFont font;
+	font.setPixelSize(20);
+	painter->setFont(font);
+
+	painter->drawImage(0,0,photo.scaled(300,380));
+
+	painter->drawText(QRectF(0,380,300,20),name,to);
+	painter->drawRect(0,0,300,400);
 
 }
 
-void TreeLeaf::mousePressEvent(QGraphicsSceneMouseEvent *event)
-{
-	 QGraphicsItem::mousePressEvent(event);
-	 update();
-}
 
-void TreeLeaf::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
-{
-		  update();
 
-	 QGraphicsItem::mouseMoveEvent(event);
-}
 
-void TreeLeaf::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
-{
-	 QGraphicsItem::mouseReleaseEvent(event);
-	 update();
-}
+
+
+

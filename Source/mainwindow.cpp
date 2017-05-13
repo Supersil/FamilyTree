@@ -60,12 +60,28 @@ void MainWindow::createScene()
 {
 	scene = new QGraphicsScene;
 
-	QGraphicsItem *item = new TreeLeaf(tr("Иванов Иван Иванович"),tr(":/no_photo.jpg"), 0, 0);
+	QGraphicsItem *item = new TreeLeaf(tr("Иванов Иван Иванович"),tr(":/1.jpeg"), 0, 0);
 	item->setPos(QPointF(0, 0));
 	scene->addItem(item);
 
-	scene->addRect(0,0,1,1,QPen(QColor(255,255,255)), QBrush(QColor(255,255,255)));
-	scene->addRect(1000,1000,1,1,QPen(QColor(255,255,255)), QBrush(QColor(255,255,255)));
+	item = new TreeLeaf(tr("Петров Петр Петрович"),tr(":/2.jpg"), 0, 0);
+	item->setPos(QPointF(400, 0));
+	scene->addItem(item);
+
+
+	item = new TreeLeaf(tr("Сидоров Сидр Сидорович"),tr(":/3.jpg"), 0, 0);
+	item->setPos(QPointF(800, 0));
+	scene->addItem(item);
+
+
+	item = new TreeLeaf(tr("Афанасьев Афанасий Афанасьевич"),tr(":/4.jpg"), 0, 0);
+	item->setPos(QPointF(1200, 0));
+	scene->addItem(item);
+
+
+	scene->addRect(-100,-100,1,1,QPen(QColor(255,255,255)), QBrush(QColor(255,255,255)));
+	scene->addRect(1600,500,1,1,QPen(QColor(255,255,255)), QBrush(QColor(255,255,255)));
+
 //	QPixmap pic(tr(":/Resources/no_photo.jpg"));
 //	int w = pic.width();
 //	int h = pic.height();
