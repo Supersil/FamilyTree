@@ -87,8 +87,8 @@ int GraphicsView::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     return _id;
 }
 struct qt_meta_stringdata_View_t {
-    QByteArrayData data[14];
-    char stringdata0[150];
+    QByteArrayData data[8];
+    char stringdata0[71];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -104,20 +104,11 @@ QT_MOC_LITERAL(3, 13, 5), // "level"
 QT_MOC_LITERAL(4, 19, 7), // "zoomOut"
 QT_MOC_LITERAL(5, 27, 9), // "resetView"
 QT_MOC_LITERAL(6, 37, 21), // "setResetButtonEnabled"
-QT_MOC_LITERAL(7, 59, 11), // "setupMatrix"
-QT_MOC_LITERAL(8, 71, 17), // "togglePointerMode"
-QT_MOC_LITERAL(9, 89, 12), // "toggleOpenGL"
-QT_MOC_LITERAL(10, 102, 18), // "toggleAntialiasing"
-QT_MOC_LITERAL(11, 121, 5), // "print"
-QT_MOC_LITERAL(12, 127, 10), // "rotateLeft"
-QT_MOC_LITERAL(13, 138, 11) // "rotateRight"
+QT_MOC_LITERAL(7, 59, 11) // "setupMatrix"
 
     },
     "View\0zoomIn\0\0level\0zoomOut\0resetView\0"
-    "setResetButtonEnabled\0setupMatrix\0"
-    "togglePointerMode\0toggleOpenGL\0"
-    "toggleAntialiasing\0print\0rotateLeft\0"
-    "rotateRight"
+    "setResetButtonEnabled\0setupMatrix"
 };
 #undef QT_MOC_LITERAL
 
@@ -127,7 +118,7 @@ static const uint qt_meta_data_View[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      13,   14, // methods
+       7,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -135,30 +126,18 @@ static const uint qt_meta_data_View[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    1,   79,    2, 0x0a /* Public */,
-       1,    0,   82,    2, 0x2a /* Public | MethodCloned */,
-       4,    1,   83,    2, 0x0a /* Public */,
-       4,    0,   86,    2, 0x2a /* Public | MethodCloned */,
-       5,    0,   87,    2, 0x08 /* Private */,
-       6,    0,   88,    2, 0x08 /* Private */,
-       7,    0,   89,    2, 0x08 /* Private */,
-       8,    0,   90,    2, 0x08 /* Private */,
-       9,    0,   91,    2, 0x08 /* Private */,
-      10,    0,   92,    2, 0x08 /* Private */,
-      11,    0,   93,    2, 0x08 /* Private */,
-      12,    0,   94,    2, 0x08 /* Private */,
-      13,    0,   95,    2, 0x08 /* Private */,
+       1,    1,   49,    2, 0x0a /* Public */,
+       1,    0,   52,    2, 0x2a /* Public | MethodCloned */,
+       4,    1,   53,    2, 0x0a /* Public */,
+       4,    0,   56,    2, 0x2a /* Public | MethodCloned */,
+       5,    0,   57,    2, 0x08 /* Private */,
+       6,    0,   58,    2, 0x08 /* Private */,
+       7,    0,   59,    2, 0x08 /* Private */,
 
  // slots: parameters
     QMetaType::Void, QMetaType::Int,    3,
     QMetaType::Void,
     QMetaType::Void, QMetaType::Int,    3,
-    QMetaType::Void,
-    QMetaType::Void,
-    QMetaType::Void,
-    QMetaType::Void,
-    QMetaType::Void,
-    QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
@@ -210,13 +189,13 @@ int View::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 13)
+        if (_id < 7)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 13;
+        _id -= 7;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 13)
+        if (_id < 7)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 13;
+        _id -= 7;
     }
     return _id;
 }

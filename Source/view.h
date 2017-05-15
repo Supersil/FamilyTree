@@ -43,12 +43,7 @@ private slots:
 	 void resetView();
 	 void setResetButtonEnabled();
 	 void setupMatrix();
-	 void togglePointerMode();
-	 void toggleOpenGL();
-	 void toggleAntialiasing();
-	 void print();
-	 void rotateLeft();
-	 void rotateRight();
+
 
 private:
 	 GraphicsView *graphicsView;

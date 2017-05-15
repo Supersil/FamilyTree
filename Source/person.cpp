@@ -7,19 +7,22 @@ Person::Person()
 	birthDate.currentDate();
 	isAlive = true;
 	deathDate.setDate(0,0,0);
-	name.sprintf("Иванов Иван Иванович");
+	name.sprintf("Фамилия Имя Отчество");
 	father = 0;
 	mother = 0;
 	children.clear();
 	id = new_id();
+	info.sprintf("Информация о человеке");
+	birthPlace.sprintf("Населённый пункт");
 }
+
 
 Person::~Person()
 {
 
 }
 
-Person::Person(QDate birth, QDate death, bool alive, QString n_name)
+Person::Person(QDate birth, QDate death, bool alive, QString n_name, QString n_info, QString n_birthPlace, QString photopath)
 {
 	birthDate = birth;
 	deathDate = death;
@@ -29,9 +32,13 @@ Person::Person(QDate birth, QDate death, bool alive, QString n_name)
 	mother = 0;
 	children.clear();
 	id = new_id();
+	info = n_info;
+	birthPlace = n_birthPlace;
+	photoPath = photopath;
 }
 
-Person::Person(QDate birth, QString n_name)
+Person::Person(QDate birth, QString n_name, QString n_info, QString n_birthPlace, QString photopath)
+	: info(n_info), birthPlace(n_birthPlace),photoPath(photopath)
 {
 	birthDate = birth;
 	deathDate.setDate(0,0,0);
@@ -42,6 +49,28 @@ Person::Person(QDate birth, QString n_name)
 	children.clear();
 	id = new_id();
 }
+
+QDate Person::getBDate()
+{
+	return birthDate;
+}
+
+QString Person::getInfo()
+{
+	return info;
+}
+
+QDate Person::getDDate()
+{
+	return deathDate;
+}
+
+QString Person::getBirthPlace()
+{
+	return birthPlace;
+}
+
+
 
 QString Person::getName()
 {
@@ -62,6 +91,34 @@ int Person::get_id()
 {
 	return id;
 }
+
+Person * Person::mom()
+{
+	return mother;
+}
+
+Person * Person::dad()
+{
+	return father;
+}
+
+int Person::children_num()
+{
+	return children.size();
+}
+
+Person * Person::child(int num)
+{
+	return children[num];
+}
+
+QString Person::getPhotoPath()
+{
+	return photoPath;
+}
+
+
+
 
 
 

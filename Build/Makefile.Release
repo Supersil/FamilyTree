@@ -67,7 +67,7 @@ OBJECTS       = release/family.o \
 		release/moc_view.o \
 		release/moc_info.o
 
-DIST          =  ..\Source\family.h \
+DIST          = README.md ..\Source\family.h \
 		..\Source\mainwindow.h \
 		..\Source\person.h \
 		..\Source\treeleaf.h \
@@ -567,6 +567,12 @@ release/moc_info.cpp: ../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtWidgets/Q
 		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtWidgets/qsplitter.h \
 		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtGui/QPixmap \
 		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtGui/QImage \
+		../Source/person.h \
+		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtCore/QObject \
+		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtCore/QDate \
+		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtCore/qdatetime.h \
+		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtCore/QString \
+		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtCore/QVector \
 		../Source/info.h
 	I:\Qt\Qt5.5.0\5.5\mingw492_32\bin\moc.exe $(DEFINES) -D__GNUC__ -DWIN32 -II:/Qt/Qt5.5.0/5.5/mingw492_32/mkspecs/win32-g++ -II:/Qt_Projects/Family_tree -II:/Qt/Qt5.5.0/5.5/mingw492_32/include -II:/Qt/Qt5.5.0/5.5/mingw492_32/include/QtWidgets -II:/Qt/Qt5.5.0/5.5/mingw492_32/include/QtGui -II:/Qt/Qt5.5.0/5.5/mingw492_32/include/QtANGLE -II:/Qt/Qt5.5.0/5.5/mingw492_32/include/QtCore -I. ..\Source\info.h -o release\moc_info.cpp
 
@@ -778,6 +784,12 @@ release/main.o: ../Source/main.cpp ../Source/info.h \
 		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtWidgets/qsplitter.h \
 		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtGui/QPixmap \
 		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtGui/QImage \
+		../Source/person.h \
+		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtCore/QObject \
+		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtCore/QDate \
+		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtCore/qdatetime.h \
+		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtCore/QString \
+		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtCore/QVector \
 		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtWidgets/QApplication \
 		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtWidgets/qapplication.h \
 		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtCore/qcoreapplication.h \
@@ -785,12 +797,6 @@ release/main.o: ../Source/main.cpp ../Source/info.h \
 		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtWidgets/qdesktopwidget.h \
 		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtGui/qguiapplication.h \
 		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtGui/qinputmethod.h \
-		../Source/person.h \
-		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtCore/QObject \
-		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtCore/QDate \
-		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtCore/qdatetime.h \
-		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtCore/QString \
-		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtCore/QVector \
 		../Source/mainwindow.h \
 		../Source/view.h \
 		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtWidgets/QFrame \
@@ -2050,12 +2056,27 @@ release/info.o: ../Source/info.cpp ../Source/info.h \
 		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtWidgets/qsplitter.h \
 		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtGui/QPixmap \
 		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtGui/QImage \
+		../Source/person.h \
+		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtCore/QObject \
+		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtCore/QDate \
+		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtCore/qdatetime.h \
+		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtCore/QString \
+		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtCore/QVector \
 		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtWidgets/QGridLayout \
 		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtWidgets/qgridlayout.h \
 		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtWidgets/qlayout.h \
 		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtWidgets/qlayoutitem.h \
 		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtWidgets/qboxlayout.h \
-		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtWidgets/QHBoxLayout
+		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtWidgets/QHBoxLayout \
+		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtWidgets/QPushButton \
+		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtWidgets/qpushbutton.h \
+		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtWidgets/qabstractbutton.h \
+		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtGui/qicon.h \
+		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtWidgets/QFileDialog \
+		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtWidgets/qfiledialog.h \
+		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtCore/qdir.h \
+		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtCore/qfileinfo.h \
+		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtWidgets/qdialog.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\info.o ..\Source\info.cpp
 
 release/qrc_resources.o: release/qrc_resources.cpp 

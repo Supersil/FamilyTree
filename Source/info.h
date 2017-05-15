@@ -8,6 +8,7 @@
 #include <QSplitter>
 #include <QPixmap>
 #include <QImage>
+#include "person.h"
 
 QT_BEGIN_NAMESPACE
 class QGraphicsScene;
@@ -28,13 +29,17 @@ private:
 	QLineEdit *birthEdit;
 	QPlainTextEdit *infoText;
 	QLineEdit *birthPlace;
+	QString photoPath;
+	QLineEdit * deathEdit;
 
 public slots:
 	void changePic();
 
 public:
 	Info(QWidget *parent = 0);
+	Info(Person src);
 	~Info();
+	Person export_data();
 };
 
 #endif // INFO_H

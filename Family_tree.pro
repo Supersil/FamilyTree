@@ -29,3 +29,6 @@ HEADERS  +=    Source/family.h \
 
 RESOURCES += \
     Resource/resources.qrc
+
+DISTFILES += \
+    README.md
