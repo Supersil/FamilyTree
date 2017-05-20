@@ -72,7 +72,7 @@ Info::Info(Person src)
 	fioEdit = new QLineEdit(src.getName());
 	fioEdit->setFixedWidth(300);
 	QLabel * birthLabel = new QLabel(tr("Дата Рождения: "));
-	birthEdit = new QLineEdit(src.getBDate().toString());
+	birthEdit = new QLineEdit(src.getBDate().toString(tr("dd.MM.yyyy")));
 	QLabel * infoLabel = new QLabel(tr("Информация:"));
 	infoText = new QPlainTextEdit(src.getInfo());
 	QGridLayout * mainLayout = new QGridLayout;
@@ -82,11 +82,13 @@ Info::Info(Person src)
 
 	infoText->setMinimumHeight(300);
 
-	QCheckBox * check = new QCheckBox(tr("Живой"));
-	check->setChecked(1);
+	aliveCheck = new QCheckBox(tr("Живой"));
+	aliveCheck->setChecked(true);
+
 	QLabel * deadLabel = new QLabel(tr("Дата смерти: "));
 	deathEdit = new QLineEdit(tr("01.01.1900"));
-
+	deathEdit->setDisabled(true);
+	connect(aliveCheck,SIGNAL(clicked(bool)),deathEdit,SLOT(setDisabled(bool)));
 
 	mainLayout->addWidget(nameLabel,0,0,Qt::AlignLeft);
 	mainLayout->addWidget(fioEdit,0,1,1,2,Qt::AlignRight);
@@ -95,7 +97,7 @@ Info::Info(Person src)
 	mainLayout->addWidget(placeLabel,2,0,Qt::AlignLeft);
 	mainLayout->addWidget(birthPlace,2,1,1,2);
 
-	mainLayout->addWidget(check,3,0);
+	mainLayout->addWidget(aliveCheck,3,0);
 	mainLayout->addWidget(deadLabel,3,1);
 	mainLayout->addWidget(deathEdit,3,2);
 
@@ -116,8 +118,12 @@ Info::Info(Person src)
 	QPushButton * changePhoto = new QPushButton(tr("Изменить фотографию"));
 	mainLayout->addWidget(changePhoto,7,3);
 
-	connect(changePhoto,SIGNAL(pressed()),this,SLOT(changePic()));
+	QPushButton * saveBtn = new QPushButton(tr("Сохранить и закрыть профиль"));
+	saveBtn->setFixedSize(200,30);
+	mainLayout->addWidget(saveBtn,8,0,1,4,Qt::AlignCenter);
 
+	connect(changePhoto,SIGNAL(pressed()),this,SLOT(changePic()));
+	connect(saveBtn,SIGNAL(pressed()),this,SLOT(saveAndClose()));
 	setLayout(mainLayout);
 	setWindowTitle(tr("Профиль"));
 	photoPath = src.getPhotoPath();
@@ -144,11 +150,18 @@ void Info::changePic()
 
 Person Info::export_data()
 {
-	return Person()	;
+	QDate birth = QDate::fromString(birthEdit->text(),"dd.MM.yyyy");
+	QDate death = QDate::fromString(deathEdit->text(),"dd.MM.yyyy");
+//	bool alive =
 
-
+	return Person();
 }
 
+void Info::saveAndClose()
+{
+	export_data();
+	close();
+}
 
 
 

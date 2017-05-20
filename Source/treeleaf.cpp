@@ -25,11 +25,11 @@ QPainterPath TreeLeaf::shape() const
 void TreeLeaf::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 {
 	QMenu menu;
-	 QAction *removeAction = menu.addAction("Remove");
-	 QAction *markAction = menu.addAction("Mark");
-	 QAction *selectedAction = menu.exec(event->screenPos());
-	 if (selectedAction)
-		selectedAction = 0;
+	menu.addAction("Remove");
+	menu.addAction("Mark");
+	QAction *selectedAction = menu.exec(event->screenPos());
+	if (selectedAction->text().contains("Remove"))
+		delete this;
 
 }
 

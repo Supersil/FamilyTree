@@ -10,6 +10,7 @@
 #include <QImage>
 #include "person.h"
 #include <QDialog>
+#include <QCheckBox>
 
 QT_BEGIN_NAMESPACE
 class QGraphicsScene;
@@ -32,9 +33,10 @@ private:
 	QLineEdit *birthPlace;
 	QString photoPath;
 	QLineEdit * deathEdit;
-
+	QCheckBox * aliveCheck;
 public slots:
 	void changePic();
+	void saveAndClose();
 
 public:
 	Info(QWidget *parent = 0);
