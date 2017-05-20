@@ -2,7 +2,7 @@
 
 #include <QtWidgets>
 #include <QMenu>
-
+#include <QApplication>
 TreeLeaf::TreeLeaf(QString fio, QString path, int xx, int yy): photo(path),
 x(xx), y(yy)
 {
@@ -53,7 +53,15 @@ void TreeLeaf::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 
 
 
+void TreeLeaf::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
+{
+	Person me(QDate(1992,06,12),QObject::tr("Силков Александр Андреевич"),
+					 QObject::tr("Создатель программы"),QObject::tr("Москва"),
+					 QObject::tr(":/me.jpg"));
 
+	Info dlg(me);
+	dlg.exec();
+}
 
 
 

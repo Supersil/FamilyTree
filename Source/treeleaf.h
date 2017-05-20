@@ -4,7 +4,8 @@
 #include <QGraphicsItem>
 #include <QString>
 #include <QImage>
-
+#include "person.h"
+#include "info.h"
 class TreeLeaf: public QGraphicsItem
 {
 public:
@@ -19,7 +20,7 @@ protected:
 //	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
 //	void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 	void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
-
+	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
 private:
 	QString name;
 	QImage photo;

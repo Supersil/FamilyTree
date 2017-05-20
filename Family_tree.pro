@@ -32,3 +32,5 @@ RESOURCES += \
 
 DISTFILES += \
     README.md
+
+QMAKE_CXXFLAGS += -std=c++11

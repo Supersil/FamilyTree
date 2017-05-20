@@ -7,7 +7,7 @@
 #include <QCheckBox>
 
 Info::Info(QWidget *parent)
-	: QWidget(parent)
+	: QDialog(parent)
 {
 	//left side
 	QLabel * nameLabel = new QLabel(tr("ФИО: "));

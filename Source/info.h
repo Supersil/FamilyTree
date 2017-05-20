@@ -9,6 +9,7 @@
 #include <QPixmap>
 #include <QImage>
 #include "person.h"
+#include <QDialog>
 
 QT_BEGIN_NAMESPACE
 class QGraphicsScene;
@@ -19,7 +20,7 @@ class QLineEdit;
 
 QT_END_NAMESPACE
 
-class Info : public QWidget
+class Info : public QDialog
 {
 	Q_OBJECT
 private:
