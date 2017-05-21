@@ -3,10 +3,10 @@
 #include <QGraphicsPixmapItem>
 #include <QMenu>
 #include <QMessageBox>
-#include "treeleaf.h"
 
 MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 {
+
 	createScene();
 
 	View *view = new View(tr("Name"));
@@ -32,26 +32,24 @@ void MainWindow::ShowContextMenu(const QPoint &pos)
 	// QPoint globalPos = myWidget->viewport()->mapToGlobal(pos);
 
 	QMenu myMenu;
-	myMenu.addAction("Добавить отца",this,SLOT(addFather()));
-	myMenu.addAction("Добавить мать");
-	myMenu.addAction("Добавить ребенка");
-	myMenu.addAction("Изменить данные");
-
-	// ...
-
+	myMenu.addAction("Добавить человека",this,SLOT(addPerson()));
 	myMenu.exec(globalPos);
 
 }
 
-void MainWindow::addFather()
+void MainWindow::addPerson()
 {
-	QMessageBox mb(" Name",
-						"Hardware failure.\n\nDisk error detected\nDo you want to stop?",
-						QMessageBox::Question,
-						QMessageBox::Yes | QMessageBox::Default,
-						QMessageBox::No | QMessageBox::Escape,
-						QMessageBox::NoButton);
-	mb.exec();
+
+	Info * createPerson = new Info;
+	createPerson->exec();
+	Person * newPerson = new Person;
+
+	connect(createPerson,SIGNAL(export_person(Person)),
+			  newPerson,SLOT(import_data(Person)));
+
+	QGraphicsItem *item = new TreeLeaf(newPerson->getName(),newPerson->getPhotoPath(), 0,0);
+	item->setPos(QPointF(0,0));
+	scene->addItem(item);
 }
 
 
@@ -60,23 +58,23 @@ void MainWindow::createScene()
 {
 	scene = new QGraphicsScene;
 
-	QGraphicsItem *item = new TreeLeaf(tr("Иванов Иван Иванович"),tr(":/1.jpeg"), 0, 0);
-	item->setPos(QPointF(0, 0));
-	scene->addItem(item);
+//	QGraphicsItem *item = new TreeLeaf(tr("Иванов Иван Иванович"),tr(":/1.jpeg"), 0, 0);
+//	item->setPos(QPointF(0, 0));
+//	scene->addItem(item);
 
-	item = new TreeLeaf(tr("Петров Петр Петрович"),tr(":/2.jpg"), 0, 0);
-	item->setPos(QPointF(400, 0));
-	scene->addItem(item);
-
-
-	item = new TreeLeaf(tr("Сидоров Сидр Сидорович"),tr(":/3.jpg"), 0, 0);
-	item->setPos(QPointF(800, 0));
-	scene->addItem(item);
+//	item = new TreeLeaf(tr("Петров Петр Петрович"),tr(":/2.jpg"), 0, 0);
+//	item->setPos(QPointF(400, 0));
+//	scene->addItem(item);
 
 
-	item = new TreeLeaf(tr("Афанасьев Афанасий Афанасьевич"),tr(":/4.jpg"), 0, 0);
-	item->setPos(QPointF(1200, 0));
-	scene->addItem(item);
+//	item = new TreeLeaf(tr("Сидоров Сидр Сидорович"),tr(":/3.jpg"), 0, 0);
+//	item->setPos(QPointF(800, 0));
+//	scene->addItem(item);
+
+
+//	item = new TreeLeaf(tr("Афанасьев Афанасий Афанасьевич"),tr(":/4.jpg"), 0, 0);
+//	item->setPos(QPointF(1200, 0));
+//	scene->addItem(item);
 
 
 	scene->addRect(-100,-100,1,1,QPen(QColor(255,255,255)), QBrush(QColor(255,255,255)));

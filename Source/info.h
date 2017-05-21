@@ -40,9 +40,13 @@ public slots:
 
 public:
 	Info(QWidget *parent = 0);
-	Info(Person src);
+	Info(Person *src);
 	~Info();
-	Person export_data();
+	void export_data();
+
+signals:
+	void export_person(Person profile);
+
 };
 
 #endif // INFO_H

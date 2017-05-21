@@ -33,11 +33,11 @@ QT_MOC_LITERAL(0, 0, 10), // "MainWindow"
 QT_MOC_LITERAL(1, 11, 15), // "ShowContextMenu"
 QT_MOC_LITERAL(2, 27, 0), // ""
 QT_MOC_LITERAL(3, 28, 3), // "pos"
-QT_MOC_LITERAL(4, 32, 9) // "addFather"
+QT_MOC_LITERAL(4, 32, 9) // "addPerson"
 
     },
     "MainWindow\0ShowContextMenu\0\0pos\0"
-    "addFather"
+    "addPerson"
 };
 #undef QT_MOC_LITERAL
 
@@ -72,7 +72,7 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         Q_UNUSED(_t)
         switch (_id) {
         case 0: _t->ShowContextMenu((*reinterpret_cast< const QPoint(*)>(_a[1]))); break;
-        case 1: _t->addFather(); break;
+        case 1: _t->addPerson(); break;
         default: ;
         }
     }

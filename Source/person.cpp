@@ -16,6 +16,19 @@ Person::Person()
 	birthPlace.sprintf("Населённый пункт");
 }
 
+Person::Person(const Person &src)
+{
+	birthDate = src.birthDate;
+	isAlive = src.isAlive;
+	deathDate = src.deathDate;
+	name = src.name;
+	father = src.father;
+	mother = src.mother;
+	children = src.children;
+	id = new_id();
+	info = src.info;
+	birthPlace = src.birthPlace;
+}
 
 Person::~Person()
 {
@@ -117,7 +130,27 @@ QString Person::getPhotoPath()
 	return photoPath;
 }
 
+bool Person::checkAlive()
+{
+	return isAlive;
+}
 
+void Person::import_data(Person profile)
+{
+
+	birthDate = profile.getBDate();
+	deathDate = profile.getDDate();
+	isAlive = profile.checkAlive();
+	name = profile.getName();
+	info = profile.getInfo();
+	birthPlace = profile.getBirthPlace();
+	photoPath = profile.getPhotoPath();
+	father = profile.dad();
+	mother = profile.mom();
+	children.clear();
+	for(int i=0; i < profile.children_num(); i++)
+		children.append(profile.child(i));
+}
 
 
 

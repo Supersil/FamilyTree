@@ -5,11 +5,10 @@
 #include "person.h"
 #include <QVector>
 
-class Family : public QObject
+class Family
 {
-	Q_OBJECT
 public:
-	explicit Family(Person * me,QObject *parent=0);
+	explicit Family(Person * me);
 	void addPerson(Person * new_el);
 	void deletePerson(int num);
 

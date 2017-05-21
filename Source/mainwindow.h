@@ -4,6 +4,8 @@
 #include <QWidget>
 #include "view.h"
 #include <QGraphicsScene>
+#include "treeleaf.h"
+#include "info.h"
 
 class MainWindow : public QWidget
 {
@@ -14,15 +16,12 @@ public:
 	void createScene();
 private:
 	QGraphicsScene * scene;
-
 signals:
 
 public slots:
 	void ShowContextMenu(const QPoint& pos);
-	void addFather();
-//	void addMother();
-//	void addChild();
-//	void changeData();
+	void addPerson();
+
 };
 
 #endif // MAINWINDOW_H

@@ -15,12 +15,15 @@ public:
 	QPainterPath shape() const override;
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget) override;
 
+
 protected:
 //	void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 //	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
 //	void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 	void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
 	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
+
+
 private:
 	QString name;
 	QImage photo;

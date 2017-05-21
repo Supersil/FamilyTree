@@ -7,8 +7,8 @@ INPUT(
 ./debug\view.o
 ./debug\info.o
 ./debug\qrc_resources.o
-./debug\moc_family.o
 ./debug\moc_mainwindow.o
+./debug\moc_person.o
 ./debug\moc_view.o
 ./debug\moc_info.o
 );

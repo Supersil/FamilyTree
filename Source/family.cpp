@@ -1,6 +1,6 @@
 #include "family.h"
 
-Family::Family(Person * me, QObject *parent) : QObject(parent)
+Family::Family(Person * me)
 {
 	root = me;
 	everybody.push_back(me);

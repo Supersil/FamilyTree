@@ -59,26 +59,31 @@ Info::Info(QWidget *parent)
 	QPushButton * changePhoto = new QPushButton(tr("Изменить фотографию"));
 	mainLayout->addWidget(changePhoto,7,3);
 
+	QPushButton * saveBtn = new QPushButton(tr("Сохранить и закрыть профиль"));
+	saveBtn->setFixedSize(200,30);
+	mainLayout->addWidget(saveBtn,8,0,1,4,Qt::AlignCenter);
+
 	connect(changePhoto,SIGNAL(pressed()),this,SLOT(changePic()));
+	connect(saveBtn,SIGNAL(pressed()),this,SLOT(saveAndClose()));
 
 	setLayout(mainLayout);
 	setWindowTitle(tr("Профиль"));
 	photoPath.asprintf(":/no_photo.jpg");
 }
 
-Info::Info(Person src)
+Info::Info(Person* src)
 {
 	QLabel * nameLabel = new QLabel(tr("ФИО: "));
-	fioEdit = new QLineEdit(src.getName());
+	fioEdit = new QLineEdit(src->getName());
 	fioEdit->setFixedWidth(300);
 	QLabel * birthLabel = new QLabel(tr("Дата Рождения: "));
-	birthEdit = new QLineEdit(src.getBDate().toString(tr("dd.MM.yyyy")));
+	birthEdit = new QLineEdit(src->getBDate().toString(tr("dd.MM.yyyy")));
 	QLabel * infoLabel = new QLabel(tr("Информация:"));
-	infoText = new QPlainTextEdit(src.getInfo());
+	infoText = new QPlainTextEdit(src->getInfo());
 	QGridLayout * mainLayout = new QGridLayout;
 
 	QLabel * placeLabel = new QLabel(tr("Место Рождения: "));
-	birthPlace = new QLineEdit(src.getBirthPlace());
+	birthPlace = new QLineEdit(src->getBirthPlace());
 
 	infoText->setMinimumHeight(300);
 
@@ -108,7 +113,7 @@ Info::Info(Person src)
 
 
 	portraitLabel = new QLabel;
-	QImage img(src.getPhotoPath());
+	QImage img(src->getPhotoPath());
 	portraitLabel->setPixmap(QPixmap::fromImage(img.scaled(300,400)));
 	portraitLabel->adjustSize();
 
@@ -126,7 +131,7 @@ Info::Info(Person src)
 	connect(saveBtn,SIGNAL(pressed()),this,SLOT(saveAndClose()));
 	setLayout(mainLayout);
 	setWindowTitle(tr("Профиль"));
-	photoPath = src.getPhotoPath();
+	photoPath = src->getPhotoPath();
 }
 
 Info::~Info()
@@ -148,13 +153,19 @@ void Info::changePic()
 }
 
 
-Person Info::export_data()
+void Info::export_data()
 {
 	QDate birth = QDate::fromString(birthEdit->text(),"dd.MM.yyyy");
 	QDate death = QDate::fromString(deathEdit->text(),"dd.MM.yyyy");
-//	bool alive =
+	bool alive = aliveCheck->isChecked();
+	QString name = fioEdit->text();
+	QString info = infoText->toPlainText();
+	QString birthplace = birthPlace->text();
+	QString photopath = photoPath;
 
-	return Person();
+	Person profile(birth,death,alive,name,info,birthplace,photopath);
+
+	emit export_person(profile);
 }
 
 void Info::saveAndClose()

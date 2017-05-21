@@ -6,8 +6,9 @@
 #include <QString>
 #include <QVector>
 
-class Person
+class Person: public QObject
 {
+	Q_OBJECT
 private:
 	QDate birthDate;
 	QDate deathDate;
@@ -27,6 +28,7 @@ private:
 public:
 	Person();
 	~Person();
+	Person(const Person& src);
 	Person(QDate birth, QDate death, bool alive, QString n_name, QString n_info, QString n_birthPlace, QString photopath);
 	Person(QDate birth, QString n_name, QString n_info, QString n_birthPlace, QString photopath);
 	void setParents(Person * dad, Person * mom);
@@ -42,6 +44,10 @@ public:
 	Person * dad();
 	Person * child(int num);
 	QString getPhotoPath();
+	bool checkAlive();
+
+public slots:
+	void import_data(Person profile);
 };
 
 #endif // PERSON_H

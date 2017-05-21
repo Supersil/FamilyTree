@@ -59,7 +59,7 @@ void TreeLeaf::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 					 QObject::tr("Создатель программы"),QObject::tr("Москва"),
 					 QObject::tr(":/me.jpg"));
 
-	Info dlg(me);
+	Info dlg(&me);
 	dlg.exec();
 }
 
