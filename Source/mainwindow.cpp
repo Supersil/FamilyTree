@@ -27,13 +27,13 @@ MainWindow::~MainWindow()
 void MainWindow::ShowContextMenu(const QPoint &pos)
 {
 	// for most widgets
-	QPoint globalPos = this->mapToGlobal(pos);
+	QPoint MenuPos= this->mapToGlobal(pos);
 	// for QAbstractScrollArea and derived classes you would use:
 	// QPoint globalPos = myWidget->viewport()->mapToGlobal(pos);
 
 	QMenu myMenu;
 	myMenu.addAction("Добавить человека",this,SLOT(addPerson()));
-	myMenu.exec(globalPos);
+	myMenu.exec(MenuPos);
 
 }
 
@@ -41,17 +41,22 @@ void MainWindow::addPerson()
 {
 
 	Info * createPerson = new Info;
-	createPerson->exec();
 	Person * newPerson = new Person;
 
-	connect(createPerson,SIGNAL(export_person(Person)),
-			  newPerson,SLOT(import_data(Person)));
+	connect(createPerson,SIGNAL(export_person(Person*)),
+			  newPerson,SLOT(import_data(Person*)));
 
-	QGraphicsItem *item = new TreeLeaf(newPerson->getName(),newPerson->getPhotoPath(), 0,0);
-	item->setPos(QPointF(0,0));
-	scene->addItem(item);
+	createPerson->exec();
+
+	if (newPerson->set)
+	{
+		QGraphicsItem * item = new TreeLeaf(newPerson->getName(),newPerson->getPhotoPath(), 0,0);
+		item->setPos(QPointF(500*items.size(),500*items.size()));
+		items.push_back(item);
+//		connect((TreeLeaf*)item,SIGNAL(destroyed_leaf(TreeLeaf*)),this,SLOT(deleted_leaf(TreeLeaf*)));
+		scene->addItem(item);
+	}
 }
-
 
 
 void MainWindow::createScene()
@@ -77,8 +82,8 @@ void MainWindow::createScene()
 //	scene->addItem(item);
 
 
-	scene->addRect(-100,-100,1,1,QPen(QColor(255,255,255)), QBrush(QColor(255,255,255)));
-	scene->addRect(1600,500,1,1,QPen(QColor(255,255,255)), QBrush(QColor(255,255,255)));
+	scene->addRect(-10000,-10000,1,1,QPen(QColor(255,255,255)), QBrush(QColor(255,255,255)));
+	scene->addRect(10000,10000,1,1,QPen(QColor(255,255,255)), QBrush(QColor(255,255,255)));
 
 //	QPixmap pic(tr(":/Resources/no_photo.jpg"));
 //	int w = pic.width();

@@ -1,6 +1,6 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2017-05-09T14:41:56
+# Project created by QtCreator 2017-06-04T11:27:04
 #
 #-------------------------------------------------
 
@@ -12,20 +12,21 @@ TARGET = Family_tree
 TEMPLATE = app
 
 
-SOURCES +=    Source/family.cpp \
+SOURCES +=  Source/family.cpp \
+    Source/info.cpp \
     Source/main.cpp \
     Source/mainwindow.cpp \
     Source/person.cpp \
     Source/treeleaf.cpp \
-    Source/view.cpp \
-    Source/info.cpp
+    Source/view.cpp
 
-HEADERS  +=    Source/family.h \
+HEADERS  += \
+    Source/family.h \
+    Source/info.h \
     Source/mainwindow.h \
     Source/person.h \
     Source/treeleaf.h \
-    Source/view.h \
-    Source/info.h
+    Source/view.h
 
 RESOURCES += \
     Resource/resources.qrc

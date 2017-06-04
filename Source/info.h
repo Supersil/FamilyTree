@@ -39,13 +39,14 @@ public slots:
 	void saveAndClose();
 
 public:
-	Info(QWidget *parent = 0);
-	Info(Person *src);
+//	Info(QWidget *parent = 0);
+	Info(Person *src = 0, QWidget *parent = 0);
 	~Info();
 	void export_data();
 
 signals:
-	void export_person(Person profile);
+	void export_person(Person * profile);
+
 
 };
 

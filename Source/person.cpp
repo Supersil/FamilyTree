@@ -14,6 +14,7 @@ Person::Person()
 	id = new_id();
 	info.sprintf("Информация о человеке");
 	birthPlace.sprintf("Населённый пункт");
+	set = false;
 }
 
 Person::Person(const Person &src)
@@ -28,6 +29,7 @@ Person::Person(const Person &src)
 	id = new_id();
 	info = src.info;
 	birthPlace = src.birthPlace;
+	set = true;
 }
 
 Person::~Person()
@@ -48,6 +50,7 @@ Person::Person(QDate birth, QDate death, bool alive, QString n_name, QString n_i
 	info = n_info;
 	birthPlace = n_birthPlace;
 	photoPath = photopath;
+	set = true;
 }
 
 Person::Person(QDate birth, QString n_name, QString n_info, QString n_birthPlace, QString photopath)
@@ -61,6 +64,7 @@ Person::Person(QDate birth, QString n_name, QString n_info, QString n_birthPlace
 	mother = 0;
 	children.clear();
 	id = new_id();
+	set = true;
 }
 
 QDate Person::getBDate()
@@ -135,22 +139,25 @@ bool Person::checkAlive()
 	return isAlive;
 }
 
-void Person::import_data(Person profile)
+void Person::import_data(Person * profile)
 {
 
-	birthDate = profile.getBDate();
-	deathDate = profile.getDDate();
-	isAlive = profile.checkAlive();
-	name = profile.getName();
-	info = profile.getInfo();
-	birthPlace = profile.getBirthPlace();
-	photoPath = profile.getPhotoPath();
-	father = profile.dad();
-	mother = profile.mom();
+	birthDate = profile->getBDate();
+	deathDate = profile->getDDate();
+	isAlive = profile->checkAlive();
+	name = profile->getName();
+	info = profile->getInfo();
+	birthPlace = profile->getBirthPlace();
+	photoPath = profile->getPhotoPath();
+	father = profile->dad();
+	mother = profile->mom();
 	children.clear();
-	for(int i=0; i < profile.children_num(); i++)
-		children.append(profile.child(i));
+	for(int i=0; i < profile->children_num(); i++)
+		children.append(profile->child(i));
+	delete profile;
+	set = true;
 }
+
 
 
 

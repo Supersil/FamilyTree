@@ -3,12 +3,19 @@
 #include <QtWidgets>
 #include <QMenu>
 #include <QApplication>
-TreeLeaf::TreeLeaf(QString fio, QString path, int xx, int yy): photo(path),
+#include <QObject>
+
+TreeLeaf::TreeLeaf(QString fio, QString path, int xx, int yy, QWidget *parent): photo(path),
 x(xx), y(yy)
 {
 	name = fio;
+	setToolTip(QObject::tr("Двойное нажатие ЛКМ - открыть информацию.\nПКМ - меню."));
 }
 
+TreeLeaf::~TreeLeaf()
+{
+//	emit destroyed_leaf(this);
+}
 
 QRectF TreeLeaf::boundingRect() const
 {
@@ -26,7 +33,6 @@ void TreeLeaf::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 {
 	QMenu menu;
 	menu.addAction("Remove");
-	menu.addAction("Mark");
 	QAction *selectedAction = menu.exec(event->screenPos());
 	if (selectedAction->text().contains("Remove"))
 		delete this;
@@ -44,10 +50,10 @@ void TreeLeaf::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 	font.setPixelSize(20);
 	painter->setFont(font);
 
-	painter->drawImage(0,0,photo.scaled(300,380));
+	painter->drawImage(x,y,photo.scaled(300,380));
 
-	painter->drawText(QRectF(0,380,300,20),name,to);
-	painter->drawRect(0,0,300,400);
+	painter->drawText(QRectF(x,y+380,300,20),name,to);
+	painter->drawRect(x,y,300,400);
 
 }
 

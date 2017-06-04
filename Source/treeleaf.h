@@ -6,11 +6,13 @@
 #include <QImage>
 #include "person.h"
 #include "info.h"
+
 class TreeLeaf: public QGraphicsItem
 {
-public:
-	TreeLeaf(QString fio, QString path, int xx,int yy);
 
+public:
+	TreeLeaf(QString fio, QString path, int xx,int yy, QWidget *parent =0);
+	~TreeLeaf();
 	QRectF boundingRect() const override;
 	QPainterPath shape() const override;
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget) override;
@@ -23,8 +25,11 @@ protected:
 	void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
 	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
 
+//signals:
+//	void destroyed_leaf(TreeLeaf*);
 
 private:
+	Q_OBJECT
 	QString name;
 	QImage photo;
 	int x;

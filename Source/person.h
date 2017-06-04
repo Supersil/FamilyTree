@@ -45,9 +45,10 @@ public:
 	Person * child(int num);
 	QString getPhotoPath();
 	bool checkAlive();
+	bool set;
 
 public slots:
-	void import_data(Person profile);
+	void import_data(Person * profile);
 };
 
 #endif // PERSON_H

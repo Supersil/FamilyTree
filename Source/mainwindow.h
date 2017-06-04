@@ -6,6 +6,8 @@
 #include <QGraphicsScene>
 #include "treeleaf.h"
 #include "info.h"
+#include <QPoint>
+#include "person.h"
 
 class MainWindow : public QWidget
 {
@@ -16,12 +18,13 @@ public:
 	void createScene();
 private:
 	QGraphicsScene * scene;
+	QVector<QGraphicsItem *> items;
 signals:
 
 public slots:
 	void ShowContextMenu(const QPoint& pos);
 	void addPerson();
-
+//	void deleted_leaf(TreeLeaf *);
 };
 
 #endif // MAINWINDOW_H
