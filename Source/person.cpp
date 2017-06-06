@@ -37,7 +37,7 @@ Person::~Person()
 
 }
 
-Person::Person(QDate birth, QDate death, bool alive, QString n_name, QString n_info, QString n_birthPlace, QString photopath)
+Person::Person(QDate birth, QDate death, bool alive, QString n_name, QString n_info, QString n_birthPlace, QString photopath, sexx s)
 {
 	birthDate = birth;
 	deathDate = death;
@@ -51,9 +51,10 @@ Person::Person(QDate birth, QDate death, bool alive, QString n_name, QString n_i
 	birthPlace = n_birthPlace;
 	photoPath = photopath;
 	set = true;
+	sex = s;
 }
 
-Person::Person(QDate birth, QString n_name, QString n_info, QString n_birthPlace, QString photopath)
+Person::Person(QDate birth, QString n_name, QString n_info, QString n_birthPlace, QString photopath, sexx s)
 	: info(n_info), birthPlace(n_birthPlace),photoPath(photopath)
 {
 	birthDate = birth;
@@ -65,6 +66,22 @@ Person::Person(QDate birth, QString n_name, QString n_info, QString n_birthPlace
 	children.clear();
 	id = new_id();
 	set = true;
+	sex = s;
+}
+
+void Person::setFather(Person *dad)
+{
+	father = dad;
+}
+
+void Person::setMother(Person *mom)
+{
+	mother = mom;
+}
+
+sexx Person::getSex()
+{
+	return sex;
 }
 
 QDate Person::getBDate()
@@ -151,6 +168,7 @@ void Person::import_data(Person * profile)
 	photoPath = profile->getPhotoPath();
 	father = profile->dad();
 	mother = profile->mom();
+	sex = profile->getSex();
 	children.clear();
 	for(int i=0; i < profile->children_num(); i++)
 		children.append(profile->child(i));

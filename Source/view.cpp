@@ -57,7 +57,7 @@ View::View(const QString &name, QWidget *parent)
 	zoomSliderLayout->addWidget(zoomOutIcon);
 
 	resetButton = new QToolButton;
-	resetButton->setText(tr("0"));
+	resetButton->setText(tr("R"));
 	resetButton->setEnabled(false);
 
 	// Label layout

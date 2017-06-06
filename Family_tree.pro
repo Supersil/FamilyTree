@@ -35,3 +35,5 @@ DISTFILES += \
     README.md
 
 QMAKE_CXXFLAGS += -std=c++11
+
+FORMS +=

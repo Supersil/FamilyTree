@@ -3,6 +3,7 @@
 #include <QGraphicsPixmapItem>
 #include <QMenu>
 #include <QMessageBox>
+#include <QPolygonF>
 
 MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 {
@@ -33,13 +34,14 @@ void MainWindow::ShowContextMenu(const QPoint &pos)
 
 	QMenu myMenu;
 	myMenu.addAction("Добавить человека",this,SLOT(addPerson()));
+//	if (items.size())
+//		myMenu.setDisabled(1);
 	myMenu.exec(MenuPos);
 
 }
 
 void MainWindow::addPerson()
 {
-
 	Info * createPerson = new Info;
 	Person * newPerson = new Person;
 
@@ -48,16 +50,151 @@ void MainWindow::addPerson()
 
 	createPerson->exec();
 
+	addPers(QPointF(0,0), newPerson);
+
+}
+
+void MainWindow::deleted_leaf(TreeLeaf * leaf)
+{
+	for(int i = 0; i < items.size(); i++)
+	{
+		if (items[i] == leaf)
+		{
+			delete family[leaf];
+			family.erase(family.find(leaf));
+			items.erase(items.begin()+i);
+		}
+	}
+}
+
+void MainWindow::addFather(TreeLeaf * child)
+{
+	QPointF pos = child->pos();
+	QPointF ppos;
+	ppos.setX(pos.x()+300);
+	ppos.setY(pos.y()+600);
+
+	Info * createPerson = new Info;
+	Person * newPerson = new Person;
+
+	connect(createPerson,SIGNAL(export_person(Person*)),
+			  newPerson,SLOT(import_data(Person*)));
+
+	createPerson->exec();
+	family[child]->setFather(newPerson);
+	addPers(ppos, newPerson);
+
+	scene->addLine(pos.x()+150,pos.y()+400,pos.x()+150,pos.y()+500);
+	scene->addLine(pos.x()+150,pos.y()+500,pos.x()+450,pos.y()+500);
+	scene->addLine(pos.x()+450,pos.y()+500,pos.x()+450,pos.y()+600);
+
+}
+
+void MainWindow::addMother(TreeLeaf * child)
+{
+	QPointF pos = child->pos();
+	QPointF ppos;
+	ppos.setX(pos.x()-300);
+	ppos.setY(pos.y()+600);
+
+	Info * createPerson = new Info;
+	Person * newPerson = new Person;
+
+	connect(createPerson,SIGNAL(export_person(Person*)),
+			  newPerson,SLOT(import_data(Person*)));
+
+	createPerson->exec();
+	family[child]->setMother(newPerson);
+	addPers(ppos, newPerson);
+
+	scene->addLine(pos.x()+150,pos.y()+400,pos.x()+150,pos.y()+500);
+	scene->addLine(pos.x()+150,pos.y()+500,pos.x()-150,pos.y()+500);
+	scene->addLine(pos.x()-150,pos.y()+500,pos.x()-150,pos.y()+600);
+}
+
+void MainWindow::addChild(TreeLeaf * parent)
+{
+	QPointF pos = parent->pos();
+	QPointF ppos;
+
+	Person* adult = family[parent];
+	if (adult->getSex() == MALE)
+	{
+		ppos.setX(pos.x()-300);
+		ppos.setY(pos.y()-600);
+	}
+	else
+	{
+		ppos.setX(pos.x()+300);
+		ppos.setY(pos.y()-600);
+	}
+
+	Info * createPerson = new Info;
+	Person * newPerson = new Person;
+
+	connect(createPerson,SIGNAL(export_person(Person*)),
+			  newPerson,SLOT(import_data(Person*)));
+
+	createPerson->exec();
+	family[parent]->addChild(newPerson);
+	addPers(ppos, newPerson);
+
+	if (adult->getSex() == MALE)
+	{
+		scene->addLine(pos.x()+150,pos.y(),pos.x()+150,pos.y()-100);
+		scene->addLine(pos.x()+150,pos.y()-100,pos.x()-150,pos.y()-100);
+		scene->addLine(pos.x()-150,pos.y()-100,pos.x()-150,pos.y()-200);
+	}
+	else
+	{
+		scene->addLine(pos.x()+150,pos.y(),pos.x()+150,pos.y()-100);
+		scene->addLine(pos.x()+150,pos.y()-100,pos.x()+450,pos.y()-100);
+		scene->addLine(pos.x()+450,pos.y()-100,pos.x()+450,pos.y()-200);
+	}
+
+
+}
+
+void MainWindow::addPers(QPointF pos, Person *newPerson)
+{
+	QPolygonF polyg;
+	polyg << pos << pos + QPointF(300,0) <<
+			pos + QPoint(300,400) << pos + QPoint(0,400);
+
+	QList<QGraphicsItem *> collide= scene->items(polyg);
+
+	if (collide.size()!=0)
+	{
+		for(auto i : collide)
+			i->setPos(i->x()-400,i->y());
+	}
 	if (newPerson->set)
 	{
-		QGraphicsItem * item = new TreeLeaf(newPerson->getName(),newPerson->getPhotoPath(), 0,0);
-		item->setPos(QPointF(500*items.size(),500*items.size()));
+		TreeLeaf * item = new TreeLeaf(newPerson->getName(),newPerson->getPhotoPath(), 0,0,this);
+		item->setPos(pos);
 		items.push_back(item);
-//		connect((TreeLeaf*)item,SIGNAL(destroyed_leaf(TreeLeaf*)),this,SLOT(deleted_leaf(TreeLeaf*)));
+		family.insert(item,newPerson);
+		connect(item,SIGNAL(destroyed_leaf(TreeLeaf*)),this,SLOT(deleted_leaf(TreeLeaf*)));
+		connect(item,SIGNAL(addDad(TreeLeaf*)),this,SLOT(addFather(TreeLeaf*)));
+		connect(item,SIGNAL(addMom(TreeLeaf*)),this,SLOT(addMother(TreeLeaf*)));
+		connect(item,SIGNAL(addChild(TreeLeaf*)),this,SLOT(addChild(TreeLeaf*)));
+		connect(item,SIGNAL(showInfo(TreeLeaf*)),this,SLOT(showInformation(TreeLeaf*)));
 		scene->addItem(item);
 	}
 }
 
+void MainWindow::showInformation(TreeLeaf * leaf)
+{
+
+	Person * pers = family[leaf];
+	Info * dlg = new Info(pers);
+	connect(dlg,SIGNAL(export_person(Person*)),
+			  pers,SLOT(import_data(Person*)));
+	connect(dlg,SIGNAL(export_person(Person*)),
+			  leaf,SLOT(changeInfo(Person*)));
+	dlg->exec();
+
+}
 
 void MainWindow::createScene()
 {

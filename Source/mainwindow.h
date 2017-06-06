@@ -8,6 +8,7 @@
 #include "info.h"
 #include <QPoint>
 #include "person.h"
+#include <QMap>
 
 class MainWindow : public QWidget
 {
@@ -18,13 +19,18 @@ public:
 	void createScene();
 private:
 	QGraphicsScene * scene;
-	QVector<QGraphicsItem *> items;
-signals:
+	QVector<TreeLeaf *> items;
+	QMap<TreeLeaf *, Person *> family;
+	void addPers(QPointF pos, Person * newPerson);
 
 public slots:
 	void ShowContextMenu(const QPoint& pos);
 	void addPerson();
-//	void deleted_leaf(TreeLeaf *);
+	void deleted_leaf(TreeLeaf *);
+	void addFather(TreeLeaf *);
+	void addMother(TreeLeaf *);
+	void addChild(TreeLeaf *);
+	void showInformation(TreeLeaf*);
 };
 
 #endif // MAINWINDOW_H

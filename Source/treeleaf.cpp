@@ -4,17 +4,22 @@
 #include <QMenu>
 #include <QApplication>
 #include <QObject>
+#include <QPolygonF>
 
-TreeLeaf::TreeLeaf(QString fio, QString path, int xx, int yy, QWidget *parent): photo(path),
-x(xx), y(yy)
+TreeLeaf::TreeLeaf(QString fio, QString path, int xx, int yy, QWidget *par, QWidget *parent): photo(path),
+x(xx), y(yy), name(fio), p(par)
 {
-	name = fio;
 	setToolTip(QObject::tr("Двойное нажатие ЛКМ - открыть информацию.\nПКМ - меню."));
+
+//	<< mapToScene(0, 0)
+//   << mapToScene(-30, -50)
+//   << mapToScene(30, -50)
+
 }
 
 TreeLeaf::~TreeLeaf()
 {
-//	emit destroyed_leaf(this);
+	emit destroyed_leaf(this);
 }
 
 QRectF TreeLeaf::boundingRect() const
@@ -32,10 +37,24 @@ QPainterPath TreeLeaf::shape() const
 void TreeLeaf::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 {
 	QMenu menu;
-	menu.addAction("Remove");
+	menu.addAction("Добавить отца");
+	menu.addAction("Добавить мать");
+	menu.addAction("Добавить ребенка");
+	menu.addAction("Удалить");
+
 	QAction *selectedAction = menu.exec(event->screenPos());
-	if (selectedAction->text().contains("Remove"))
+	if (selectedAction)
+	{
+	if (selectedAction->text().contains("Удалить"))
 		delete this;
+	if (selectedAction->text().contains("отца"))
+		emit addDad(this);
+	if (selectedAction->text().contains("мать"))
+		emit addMom(this);
+	if (selectedAction->text().contains("ребенка"))
+		emit addChild(this);
+	}
+
 
 }
 
@@ -61,13 +80,15 @@ void TreeLeaf::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 
 void TreeLeaf::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
-	Person me(QDate(1992,06,12),QObject::tr("Силков Александр Андреевич"),
-					 QObject::tr("Создатель программы"),QObject::tr("Москва"),
-					 QObject::tr(":/me.jpg"));
-
-	Info dlg(&me);
-	dlg.exec();
+	emit showInfo(this);
 }
 
+
+void TreeLeaf::changeInfo(Person * newPerson)
+{
+	name = newPerson->getName();
+	photo = QImage(newPerson->getPhotoPath());
+
+}
 
 

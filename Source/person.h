@@ -6,6 +6,8 @@
 #include <QString>
 #include <QVector>
 
+enum sexx{ MALE, FEMALE};
+
 class Person: public QObject
 {
 	Q_OBJECT
@@ -24,14 +26,17 @@ private:
 	int id;
 	static int global_id;
 	int new_id();
+	sexx sex;
 
 public:
 	Person();
 	~Person();
 	Person(const Person& src);
-	Person(QDate birth, QDate death, bool alive, QString n_name, QString n_info, QString n_birthPlace, QString photopath);
-	Person(QDate birth, QString n_name, QString n_info, QString n_birthPlace, QString photopath);
-	void setParents(Person * dad, Person * mom);
+	Person(QDate birth, QDate death, bool alive, QString n_name, QString n_info, QString n_birthPlace, QString photopath,sexx s);
+	Person(QDate birth, QString n_name, QString n_info, QString n_birthPlace, QString photopath, sexx s);
+//	void setParents(Person * dad, Person * mom);
+	void setMother(Person * mom);
+	void setFather(Person * dad);
 	QString getName();
 	void addChild(Person * child);
 	int get_id();
@@ -46,6 +51,7 @@ public:
 	QString getPhotoPath();
 	bool checkAlive();
 	bool set;
+	sexx getSex();
 
 public slots:
 	void import_data(Person * profile);

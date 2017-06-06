@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_MainWindow_t {
-    QByteArrayData data[5];
-    char stringdata0[42];
+    QByteArrayData data[11];
+    char stringdata0[110];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -33,11 +33,19 @@ QT_MOC_LITERAL(0, 0, 10), // "MainWindow"
 QT_MOC_LITERAL(1, 11, 15), // "ShowContextMenu"
 QT_MOC_LITERAL(2, 27, 0), // ""
 QT_MOC_LITERAL(3, 28, 3), // "pos"
-QT_MOC_LITERAL(4, 32, 9) // "addPerson"
+QT_MOC_LITERAL(4, 32, 9), // "addPerson"
+QT_MOC_LITERAL(5, 42, 12), // "deleted_leaf"
+QT_MOC_LITERAL(6, 55, 9), // "TreeLeaf*"
+QT_MOC_LITERAL(7, 65, 9), // "addFather"
+QT_MOC_LITERAL(8, 75, 9), // "addMother"
+QT_MOC_LITERAL(9, 85, 8), // "addChild"
+QT_MOC_LITERAL(10, 94, 15) // "showInformation"
 
     },
     "MainWindow\0ShowContextMenu\0\0pos\0"
-    "addPerson"
+    "addPerson\0deleted_leaf\0TreeLeaf*\0"
+    "addFather\0addMother\0addChild\0"
+    "showInformation"
 };
 #undef QT_MOC_LITERAL
 
@@ -47,7 +55,7 @@ static const uint qt_meta_data_MainWindow[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-       2,   14, // methods
+       7,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -55,12 +63,22 @@ static const uint qt_meta_data_MainWindow[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    1,   24,    2, 0x0a /* Public */,
-       4,    0,   27,    2, 0x0a /* Public */,
+       1,    1,   49,    2, 0x0a /* Public */,
+       4,    0,   52,    2, 0x0a /* Public */,
+       5,    1,   53,    2, 0x0a /* Public */,
+       7,    1,   56,    2, 0x0a /* Public */,
+       8,    1,   59,    2, 0x0a /* Public */,
+       9,    1,   62,    2, 0x0a /* Public */,
+      10,    1,   65,    2, 0x0a /* Public */,
 
  // slots: parameters
     QMetaType::Void, QMetaType::QPoint,    3,
     QMetaType::Void,
+    QMetaType::Void, 0x80000000 | 6,    2,
+    QMetaType::Void, 0x80000000 | 6,    2,
+    QMetaType::Void, 0x80000000 | 6,    2,
+    QMetaType::Void, 0x80000000 | 6,    2,
+    QMetaType::Void, 0x80000000 | 6,    2,
 
        0        // eod
 };
@@ -73,7 +91,51 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         switch (_id) {
         case 0: _t->ShowContextMenu((*reinterpret_cast< const QPoint(*)>(_a[1]))); break;
         case 1: _t->addPerson(); break;
+        case 2: _t->deleted_leaf((*reinterpret_cast< TreeLeaf*(*)>(_a[1]))); break;
+        case 3: _t->addFather((*reinterpret_cast< TreeLeaf*(*)>(_a[1]))); break;
+        case 4: _t->addMother((*reinterpret_cast< TreeLeaf*(*)>(_a[1]))); break;
+        case 5: _t->addChild((*reinterpret_cast< TreeLeaf*(*)>(_a[1]))); break;
+        case 6: _t->showInformation((*reinterpret_cast< TreeLeaf*(*)>(_a[1]))); break;
         default: ;
+        }
+    } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
+        switch (_id) {
+        default: *reinterpret_cast<int*>(_a[0]) = -1; break;
+        case 2:
+            switch (*reinterpret_cast<int*>(_a[1])) {
+            default: *reinterpret_cast<int*>(_a[0]) = -1; break;
+            case 0:
+                *reinterpret_cast<int*>(_a[0]) = qRegisterMetaType< TreeLeaf* >(); break;
+            }
+            break;
+        case 3:
+            switch (*reinterpret_cast<int*>(_a[1])) {
+            default: *reinterpret_cast<int*>(_a[0]) = -1; break;
+            case 0:
+                *reinterpret_cast<int*>(_a[0]) = qRegisterMetaType< TreeLeaf* >(); break;
+            }
+            break;
+        case 4:
+            switch (*reinterpret_cast<int*>(_a[1])) {
+            default: *reinterpret_cast<int*>(_a[0]) = -1; break;
+            case 0:
+                *reinterpret_cast<int*>(_a[0]) = qRegisterMetaType< TreeLeaf* >(); break;
+            }
+            break;
+        case 5:
+            switch (*reinterpret_cast<int*>(_a[1])) {
+            default: *reinterpret_cast<int*>(_a[0]) = -1; break;
+            case 0:
+                *reinterpret_cast<int*>(_a[0]) = qRegisterMetaType< TreeLeaf* >(); break;
+            }
+            break;
+        case 6:
+            switch (*reinterpret_cast<int*>(_a[1])) {
+            default: *reinterpret_cast<int*>(_a[0]) = -1; break;
+            case 0:
+                *reinterpret_cast<int*>(_a[0]) = qRegisterMetaType< TreeLeaf* >(); break;
+            }
+            break;
         }
     }
 }
@@ -103,13 +165,13 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 2)
+        if (_id < 7)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 2;
+        _id -= 7;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 2)
-            *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 2;
+        if (_id < 7)
+            qt_static_metacall(this, _c, _id, _a);
+        _id -= 7;
     }
     return _id;
 }

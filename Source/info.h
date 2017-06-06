@@ -11,6 +11,7 @@
 #include "person.h"
 #include <QDialog>
 #include <QCheckBox>
+#include <QComboBox>
 
 QT_BEGIN_NAMESPACE
 class QGraphicsScene;
@@ -34,6 +35,8 @@ private:
 	QString photoPath;
 	QLineEdit * deathEdit;
 	QCheckBox * aliveCheck;
+	QComboBox * sexBox;
+
 public slots:
 	void changePic();
 	void saveAndClose();
