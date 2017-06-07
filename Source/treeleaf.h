@@ -22,7 +22,7 @@ public:
 	QRectF boundingRect() const override;
 	QPainterPath shape() const override;
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget) override;
-	QList<QLine> connection;
+	QList<QGraphicsLineItem * > connection;
 
 protected:
 	void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
@@ -41,6 +41,7 @@ private:
 	int x;
 	int y;
 	QWidget * p;
+	QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
 public slots:
 	void changeInfo(Person *);

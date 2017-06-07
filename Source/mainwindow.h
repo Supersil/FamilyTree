@@ -21,7 +21,7 @@ private:
 	QGraphicsScene * scene;
 	QVector<TreeLeaf *> items;
 	QMap<TreeLeaf *, Person *> family;
-	void addPers(QPointF pos, Person * newPerson);
+	TreeLeaf * addPers(QPointF pos, Person * newPerson);
 
 public slots:
 	void ShowContextMenu(const QPoint& pos);
@@ -31,6 +31,7 @@ public slots:
 	void addMother(TreeLeaf *);
 	void addChild(TreeLeaf *);
 	void showInformation(TreeLeaf*);
+	void saveFamily();
 };
 
 #endif // MAINWINDOW_H

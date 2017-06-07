@@ -8,8 +8,8 @@ Person::Person()
 	isAlive = true;
 	deathDate.setDate(0,0,0);
 	name.sprintf("Фамилия Имя Отчество");
-	father = 0;
-	mother = 0;
+	father = nullptr;
+	mother = nullptr;
 	children.clear();
 	id = new_id();
 	info.sprintf("Информация о человеке");
@@ -43,8 +43,8 @@ Person::Person(QDate birth, QDate death, bool alive, QString n_name, QString n_i
 	deathDate = death;
 	isAlive = alive;
 	name = n_name;
-	father = 0;
-	mother = 0;
+	father = nullptr;
+	mother = nullptr;
 	children.clear();
 	id = new_id();
 	info = n_info;
@@ -61,8 +61,8 @@ Person::Person(QDate birth, QString n_name, QString n_info, QString n_birthPlace
 	deathDate.setDate(0,0,0);
 	isAlive = true;
 	name = n_name;
-	father = 0;
-	mother = 0;
+	father = nullptr;
+	mother = nullptr;
 	children.clear();
 	id = new_id();
 	set = true;

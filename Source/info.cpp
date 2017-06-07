@@ -34,6 +34,13 @@ Info::Info(Person* src, QWidget * parent): QDialog(parent)
 	deathEdit->setDisabled(true);
 	connect(aliveCheck,SIGNAL(clicked(bool)),deathEdit,SLOT(setDisabled(bool)));
 
+	if (!src->checkAlive())
+	{
+		aliveCheck->setChecked(0);
+		deathEdit->setEnabled(1);
+		deathEdit->setText(src->getDDate().toString(tr("dd.MM.yyyy")));
+	}
+
 	mainLayout->addWidget(nameLabel,0,0,Qt::AlignLeft);
 	mainLayout->addWidget(fioEdit,0,1,1,2,Qt::AlignRight);
 	mainLayout->addWidget(birthLabel,1,0,Qt::AlignLeft);
@@ -42,6 +49,11 @@ Info::Info(Person* src, QWidget * parent): QDialog(parent)
 	sexBox = new QComboBox;
 	sexBox->addItem("Мужской пол");
 	sexBox->addItem("Женский пол");
+
+	if (src->getSex()==MALE)
+		sexBox->setCurrentIndex(0);
+	else
+		sexBox->setCurrentIndex(1);
 
 	mainLayout->addWidget(sexBox,1,2);
 

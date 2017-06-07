@@ -6,5 +6,8 @@
         <file>3.jpg</file>
         <file>4.jpg</file>
         <file>me.jpg</file>
+        <file>dad.jpg</file>
+        <file>mom.jpg</file>
+        <file>grandm.jpg</file>
     </qresource>
 </RCC>

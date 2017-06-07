@@ -4,6 +4,7 @@
 #include <QMenu>
 #include <QMessageBox>
 #include <QPolygonF>
+#include <QFile>
 
 MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 {
@@ -34,6 +35,7 @@ void MainWindow::ShowContextMenu(const QPoint &pos)
 
 	QMenu myMenu;
 	myMenu.addAction("Добавить человека",this,SLOT(addPerson()));
+	myMenu.addAction("Сохранить данные о семье",this,SLOT(saveFamily()));
 //	if (items.size())
 //		myMenu.setDisabled(1);
 	myMenu.exec(MenuPos);
@@ -82,7 +84,8 @@ void MainWindow::addFather(TreeLeaf * child)
 
 	createPerson->exec();
 	family[child]->setFather(newPerson);
-	addPers(ppos, newPerson);
+	TreeLeaf * father = addPers(ppos, newPerson);
+
 
 	scene->addLine(pos.x()+150,pos.y()+400,pos.x()+150,pos.y()+500);
 	scene->addLine(pos.x()+150,pos.y()+500,pos.x()+450,pos.y()+500);
@@ -155,7 +158,7 @@ void MainWindow::addChild(TreeLeaf * parent)
 
 }
 
-void MainWindow::addPers(QPointF pos, Person *newPerson)
+TreeLeaf * MainWindow::addPers(QPointF pos, Person *newPerson)
 {
 	QPolygonF polyg;
 	polyg << pos << pos + QPointF(300,0) <<
@@ -172,6 +175,7 @@ void MainWindow::addPers(QPointF pos, Person *newPerson)
 	{
 		TreeLeaf * item = new TreeLeaf(newPerson->getName(),newPerson->getPhotoPath(), 0,0,this);
 		item->setPos(pos);
+		item->setFlag(QGraphicsItem::ItemSendsGeometryChanges);
 		items.push_back(item);
 		family.insert(item,newPerson);
 		connect(item,SIGNAL(destroyed_leaf(TreeLeaf*)),this,SLOT(deleted_leaf(TreeLeaf*)));
@@ -180,7 +184,9 @@ void MainWindow::addPers(QPointF pos, Person *newPerson)
 		connect(item,SIGNAL(addChild(TreeLeaf*)),this,SLOT(addChild(TreeLeaf*)));
 		connect(item,SIGNAL(showInfo(TreeLeaf*)),this,SLOT(showInformation(TreeLeaf*)));
 		scene->addItem(item);
+		return item;
 	}
+	return nullptr;
 }
 
 void MainWindow::showInformation(TreeLeaf * leaf)
@@ -200,42 +206,32 @@ void MainWindow::createScene()
 {
 	scene = new QGraphicsScene;
 
-//	QGraphicsItem *item = new TreeLeaf(tr("Иванов Иван Иванович"),tr(":/1.jpeg"), 0, 0);
-//	item->setPos(QPointF(0, 0));
-//	scene->addItem(item);
-
-//	item = new TreeLeaf(tr("Петров Петр Петрович"),tr(":/2.jpg"), 0, 0);
-//	item->setPos(QPointF(400, 0));
-//	scene->addItem(item);
-
-
-//	item = new TreeLeaf(tr("Сидоров Сидр Сидорович"),tr(":/3.jpg"), 0, 0);
-//	item->setPos(QPointF(800, 0));
-//	scene->addItem(item);
-
-
-//	item = new TreeLeaf(tr("Афанасьев Афанасий Афанасьевич"),tr(":/4.jpg"), 0, 0);
-//	item->setPos(QPointF(1200, 0));
-//	scene->addItem(item);
-
 
 	scene->addRect(-10000,-10000,1,1,QPen(QColor(255,255,255)), QBrush(QColor(255,255,255)));
 	scene->addRect(10000,10000,1,1,QPen(QColor(255,255,255)), QBrush(QColor(255,255,255)));
 
-//	QPixmap pic(tr(":/Resources/no_photo.jpg"));
-//	int w = pic.width();
-//	int h = pic.height();
-//	scene->addPixmap(pic)->setPos((3*w/2)+1,0+1);
-//	scene->addPixmap(pic)->setPos(0+1,h*1.5+1);
-//	scene->addPixmap(pic)->setPos(3*w+1,h*1.5+1);
+	Person *  me = new Person(QDate(1992,6,12),tr("Силков Александр Андреевич"),tr("Создатель программы"),tr("Москва"),tr(":/me.jpg"),MALE);
+	addPers(QPointF(0,0),me);
+	Person *  dad = new Person(QDate(1970,10,24),tr("Силков Андрей Николаевич"),tr("Папа"),tr("Москва"),tr(":/dad.jpg"),MALE);
+	addPers(QPointF(300,600),dad);
+	Person *  mom = new Person(QDate(1971,7,29),tr("Силкова Светлана Сергеевна"),tr("Мама"),tr("Солнцево"),tr(":/mom.jpg"),FEMALE);
+	addPers(QPointF(-300,600),mom);
+	Person *  granm = new Person(QDate(1950,3,5),tr("Бабенко Любовь Тихоновна"),tr("Бабушка"),tr("Льгов"),tr(":/grandm.jpg"),FEMALE);
+	addPers(QPointF(-600,1200),granm);
+	Person *  grand = new Person(QDate(1900,1,1),QDate(1992,6,20),false,tr("Бабенко Сергей"),tr("Дедушка"),tr("Льгов"),tr(":/no_photo.jpg"),MALE);
+	addPers(QPointF(0,1200),grand);
 
-//	scene->addRect((3*w/2),0,w+2,h+2);
-//	scene->addRect(0,h*1.5,w+2,h+2);
-//	scene->addRect(3*w,h*1.5,w+2,h+2);
+}
 
-//	scene->addLine(2*w,h,2*w,h*5/4);
-//	scene->addLine(0.5*w,h*5/4,3.5*w,h*5/4);
-//	scene->addLine(0.5*w,h*5/4,0.5*w,h*1.5);
-//	scene->addLine(3.5*w,h*5/4,3.5*w,h*1.5);
 
+void MainWindow::saveFamily()
+{
+	items[0]->setFlag(QGraphicsItem::ItemSendsGeometryChanges);
+	items[0]->moveBy(-100,-100);
+//	QFile ofile;
+//	ofile.setFileName(tr("output.dat"));
+//	ofile.open(QIODevice::WriteOnly);
+
+
+//	ofile.close();
 }

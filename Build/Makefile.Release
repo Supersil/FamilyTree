@@ -11,10 +11,10 @@ MAKEFILE      = Makefile.Release
 
 CC            = gcc
 CXX           = g++
-DEFINES       = -DUNICODE -DQT_STATIC_BUILD -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_NEEDS_QMAIN
+DEFINES       = -DUNICODE -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_NEEDS_QMAIN
 CFLAGS        = -pipe -fno-keep-inline-dllexport -O2 -Wall -Wextra $(DEFINES)
 CXXFLAGS      = -pipe -fno-keep-inline-dllexport -std=c++11 -O2 -frtti -Wall -Wextra -fexceptions -mthreads $(DEFINES)
-INCPATH       = -I..\..\Family_tree -I. -I..\..\..\Qt\Qt5.5.0\5.5\mingw492_32\include -I..\..\..\Qt\Qt5.5.0\5.5\mingw492_32\include\QtWidgets -I..\..\..\Qt\Qt5.5.0\5.5\mingw492_32\include\QtGui -I..\..\..\Qt\Qt5.5.0\5.5\mingw492_32\include\QtANGLE -I..\..\..\Qt\Qt5.5.0\5.5\mingw492_32\include\QtCore -Irelease -I. -I..\..\..\Qt\Qt5.5.0\5.5\mingw492_32\mkspecs\win32-g++ 
+INCPATH       = -I..\..\Family_tree -I. -I..\..\..\Qt\Qt5.5.0\5.5\mingw492_32\include -I..\..\..\Qt\Qt5.5.0\5.5\mingw492_32\include\QtWidgets -I..\..\..\Qt\Qt5.5.0\5.5\mingw492_32\include\QtGui -I..\..\..\Qt\Qt5.5.0\5.5\mingw492_32\include\QtANGLE -I..\..\..\Qt\Qt5.5.0\5.5\mingw492_32\include\QtCore -Irelease -I..\..\..\Qt\Qt5.5.0\5.5\mingw492_32\mkspecs\win32-g++ 
 LINKER      =        g++
 LFLAGS        =        -Wl,-s -Wl,-subsystem,windows -mthreads
 LIBS        =        -lmingw32 -LI:/Qt/Qt5.5.0/5.5/mingw492_32/lib -lqtmain -lshell32 -lQt5Widgets -lQt5Gui -lQt5Core 
@@ -107,7 +107,7 @@ DESTDIR_TARGET = release\Family_tree.exe
 first: all
 all: Makefile.Release  $(DESTDIR_TARGET)
 
-$(DESTDIR_TARGET): ui_form.h $(OBJECTS) 
+$(DESTDIR_TARGET):  $(OBJECTS) 
 	$(LINKER) $(LFLAGS) -o $(DESTDIR_TARGET) object_script.Family_tree.Release  $(LIBS)
 
 qmake: FORCE
@@ -808,19 +808,15 @@ release/moc_view.cpp: ../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtWidgets/Q
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
-compiler_uic_make_all: ui_form.h
+compiler_uic_make_all:
 compiler_uic_clean:
-	-$(DEL_FILE) ui_form.h
-ui_form.h: ../form.ui
-	I:\Qt\Qt5.5.0\5.5\mingw492_32\bin\uic.exe ..\form.ui -o ui_form.h
-
 compiler_yacc_decl_make_all:
 compiler_yacc_decl_clean:
 compiler_yacc_impl_make_all:
 compiler_yacc_impl_clean:
 compiler_lex_make_all:
 compiler_lex_clean:
-compiler_clean: compiler_rcc_clean compiler_moc_header_clean compiler_uic_clean 
+compiler_clean: compiler_rcc_clean compiler_moc_header_clean 
 
 
 
@@ -1410,7 +1406,8 @@ release/mainwindow.o: ../Source/mainwindow.cpp ../Source/mainwindow.h \
 		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtWidgets/qaction.h \
 		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtWidgets/qactiongroup.h \
 		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtWidgets/QMessageBox \
-		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtWidgets/qmessagebox.h
+		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtWidgets/qmessagebox.h \
+		../../../../Qt/Qt5.5.0/5.5/mingw492_32/include/QtGui/QPolygonF
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\mainwindow.o ..\Source\mainwindow.cpp
 
 release/person.o: ../Source/person.cpp ../Source/person.h \
