@@ -14,7 +14,7 @@ x(xx), y(yy), name(fio), p(par)
 //	<< mapToScene(0, 0)
 //   << mapToScene(-30, -50)
 //   << mapToScene(30, -50)
-
+	movability = false;
 }
 
 TreeLeaf::~TreeLeaf()
@@ -41,6 +41,13 @@ void TreeLeaf::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 	menu.addAction("Добавить мать");
 	menu.addAction("Добавить ребенка");
 	menu.addAction("Удалить");
+	QAction * replaceble = new QAction(&menu);
+//	replaceble->setObjectName(tr("Перемещаемый объект"));
+	replaceble->setText(tr("Перемещаемый объект"));
+	replaceble->setCheckable(true);
+	replaceble->setChecked(movability);
+	connect(replaceble,SIGNAL(changed()),this,SLOT(changeMovability()));
+	menu.addAction(replaceble);//,this,SLOT(changeMovability()));
 
 	QAction *selectedAction = menu.exec(event->screenPos());
 	if (selectedAction)
@@ -94,17 +101,35 @@ void TreeLeaf::changeInfo(Person * newPerson)
 QVariant TreeLeaf::itemChange(GraphicsItemChange change, const QVariant &value)
 {
 	if (change == ItemPositionChange && scene()) {
-		  // value is the new position.
-		  QPointF newPos = value.toPointF();
-		  QRectF rect = scene()->sceneRect();
-		  if (!rect.contains(newPos)) {
-				// Keep the item inside the scene rect.
-				newPos.setX(qMin(rect.right(), qMax(newPos.x(), rect.left())));
-				newPos.setY(qMin(rect.bottom(), qMax(newPos.y(), rect.top())));
-				return newPos;
-		  }
+		emit moved(this);
+		QPointF oldPos	= mapToScene(0,0);
+		QPointF newPos = value.toPointF();
+		int delta_y = newPos.y()/100;
+		delta_y -= (int)oldPos.y()/100;
+		if (delta_y !=0)
+			newPos.setY(oldPos.y());
+		return newPos;
 	 }
 	 return QGraphicsItem::itemChange(change, value);
+}
+
+
+void TreeLeaf::changeMovability()
+{
+	movability = !(movability);
+	setFlag(QGraphicsItem::ItemIsMovable,movability);
+}
+
+QPointF TreeLeaf::top()
+{
+	QPointF pos = mapToScene(0,0);
+	return QPointF(pos.x()+150,pos.y());
+}
+
+QPointF TreeLeaf::btm()
+{
+	QPointF pos = mapToScene(0,0);
+	return QPointF(pos.x()+150,pos.y()+400);
 }
 
 

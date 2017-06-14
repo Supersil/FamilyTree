@@ -90,6 +90,7 @@ Info::Info(Person* src, QWidget * parent): QDialog(parent)
 	setLayout(mainLayout);
 	setWindowTitle(tr("Профиль"));
 	photoPath = src->getPhotoPath();
+	saveBtn->setFocus();
 
 }
 

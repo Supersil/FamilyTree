@@ -22,7 +22,9 @@ public:
 	QRectF boundingRect() const override;
 	QPainterPath shape() const override;
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget) override;
-	QList<QGraphicsLineItem * > connection;
+	QList<QGraphicsLineItem * > connections;
+	QPointF top();
+	QPointF btm();
 
 protected:
 	void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
@@ -34,6 +36,7 @@ signals:
 	void addMom(TreeLeaf*);
 	void addChild(TreeLeaf*);
 	void showInfo(TreeLeaf*);
+	void moved(TreeLeaf*);
 
 private:
 	QString name;
@@ -42,9 +45,10 @@ private:
 	int y;
 	QWidget * p;
 	QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
-
+	bool movability;
 public slots:
 	void changeInfo(Person *);
+	void changeMovability();
 };
 
 #endif // TREELEAF_H

@@ -18,7 +18,8 @@ SOURCES +=  Source/family.cpp \
     Source/mainwindow.cpp \
     Source/person.cpp \
     Source/treeleaf.cpp \
-    Source/view.cpp
+    Source/view.cpp \
+    Source/treestructure.cpp
 
 HEADERS  += \
     Source/family.h \
@@ -26,7 +27,9 @@ HEADERS  += \
     Source/mainwindow.h \
     Source/person.h \
     Source/treeleaf.h \
-    Source/view.h
+    Source/view.h \
+    treestructure.h \
+    Source/treestructure.h
 
 RESOURCES += \
     Resource/resources.qrc
@@ -36,4 +39,3 @@ DISTFILES += \
 
 QMAKE_CXXFLAGS += -std=c++11
 
-FORMS +=

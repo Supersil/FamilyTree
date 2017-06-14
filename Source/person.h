@@ -5,6 +5,9 @@
 #include <QDate>
 #include <QString>
 #include <QVector>
+#include <QFile>
+#include <QTextStream>
+#include <QMessageBox>
 
 enum sexx{ MALE, FEMALE};
 
@@ -52,6 +55,7 @@ public:
 	bool checkAlive();
 	bool set;
 	sexx getSex();
+	void save_pure(QString filename);
 
 public slots:
 	void import_data(Person * profile);

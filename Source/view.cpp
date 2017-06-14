@@ -58,6 +58,7 @@ View::View(const QString &name, QWidget *parent)
 
 	resetButton = new QToolButton;
 	resetButton->setText(tr("R"));
+	resetButton->setToolTip(tr("Сбросить положение сцены"));
 	resetButton->setEnabled(false);
 
 	// Label layout
@@ -94,7 +95,7 @@ void View::resetView()
 {
 	 zoomSlider->setValue(250);
 	 setupMatrix();
-	 graphicsView->ensureVisible(QRectF(0, 0, 0, 0));
+	 graphicsView->ensureVisible(QRectF(-500, -200, 1000, 600));
 
 	 resetButton->setEnabled(false);
 }

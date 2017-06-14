@@ -21,6 +21,7 @@ private:
 	QGraphicsScene * scene;
 	QVector<TreeLeaf *> items;
 	QMap<TreeLeaf *, Person *> family;
+	QMap<Person *, TreeLeaf *> leaves;
 	TreeLeaf * addPers(QPointF pos, Person * newPerson);
 
 public slots:
@@ -32,6 +33,8 @@ public slots:
 	void addChild(TreeLeaf *);
 	void showInformation(TreeLeaf*);
 	void saveFamily();
+	void moveTest();
+	void leafMoved(TreeLeaf *);
 };
 
 #endif // MAINWINDOW_H

@@ -6,10 +6,12 @@ INPUT(
 ./debug\person.o
 ./debug\treeleaf.o
 ./debug\view.o
+./debug\treestructure.o
 ./debug\qrc_resources.o
 ./debug\moc_info.o
 ./debug\moc_mainwindow.o
 ./debug\moc_person.o
 ./debug\moc_treeleaf.o
 ./debug\moc_view.o
+./debug\moc_treestructure.o
 );

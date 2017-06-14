@@ -177,6 +177,53 @@ void Person::import_data(Person * profile)
 }
 
 
+void Person::save_pure(QString filename)
+{
+	QFile ofile;
+	ofile.setFileName(filename);
+	ofile.open(QIODevice::WriteOnly | QIODevice::Text);
+	if (!ofile.isOpen())
+	{
+		QMessageBox warning;
+		warning.setText("Error while opening the output file!");
+		warning.setInformativeText(filename);
+		warning.setWindowTitle("Error");
+		warning.exec();
+		return;
+	}
+	/*
+		save structure:
+		id
+		Name
+		1/0(alive) birthdate deathdate(even if alive)
+		sex(M/F)
+		mom_id dad_id
+		number_of_children child1_id child2_id ...
+		birthPlace
+		/!info!\
+		Info...
+		\!info!/
 
+	*/
+
+	QTextStream out(&ofile);
+	out << id << endl << name << endl;
+	out << isAlive << ' ' << birthDate.toString("dd.MM.yyyy")
+			<< ' ' << deathDate.toString("dd.MM.yyyy") << endl;
+	out << ((sex==MALE)?'M':'F') << endl;
+	out << ((mother!=nullptr)? mother->get_id() : -1) << ' ';
+	out << ((father!=nullptr)? father->get_id() : -1) << endl;
+	out << children.size() << ' ';
+	for(auto it: children)
+		out << it->get_id() << ' ';
+	out << endl;
+	out << birthPlace << endl;
+	out << "/!info!\\" << endl;
+	out << info << endl;
+	out << "\\!info!/" << endl << endl;
+
+	ofile.close();
+
+}
 
 

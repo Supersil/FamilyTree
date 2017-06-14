@@ -5,6 +5,7 @@
 #include <QMessageBox>
 #include <QPolygonF>
 #include <QFile>
+#include <QIcon>
 
 MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 {
@@ -19,6 +20,9 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 	this->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(this, SIGNAL(customContextMenuRequested(const QPoint&)),
 			  this, SLOT(ShowContextMenu(const QPoint&)));
+	setWindowTitle(tr("Генеалогия"));
+	QIcon myIcon(":/tree.png");
+	setWindowIcon(myIcon);
 }
 
 MainWindow::~MainWindow()
@@ -36,6 +40,7 @@ void MainWindow::ShowContextMenu(const QPoint &pos)
 	QMenu myMenu;
 	myMenu.addAction("Добавить человека",this,SLOT(addPerson()));
 	myMenu.addAction("Сохранить данные о семье",this,SLOT(saveFamily()));
+	myMenu.addAction("Тест сдвига",this,SLOT(moveTest()));
 //	if (items.size())
 //		myMenu.setDisabled(1);
 	myMenu.exec(MenuPos);
@@ -87,9 +92,9 @@ void MainWindow::addFather(TreeLeaf * child)
 	TreeLeaf * father = addPers(ppos, newPerson);
 
 
-	scene->addLine(pos.x()+150,pos.y()+400,pos.x()+150,pos.y()+500);
-	scene->addLine(pos.x()+150,pos.y()+500,pos.x()+450,pos.y()+500);
-	scene->addLine(pos.x()+450,pos.y()+500,pos.x()+450,pos.y()+600);
+//	scene->addLine(pos.x()+150,pos.y()+400,pos.x()+150,pos.y()+500);
+//	scene->addLine(pos.x()+150,pos.y()+500,pos.x()+450,pos.y()+500);
+//	scene->addLine(pos.x()+450,pos.y()+500,pos.x()+450,pos.y()+600);
 
 }
 
@@ -110,9 +115,9 @@ void MainWindow::addMother(TreeLeaf * child)
 	family[child]->setMother(newPerson);
 	addPers(ppos, newPerson);
 
-	scene->addLine(pos.x()+150,pos.y()+400,pos.x()+150,pos.y()+500);
-	scene->addLine(pos.x()+150,pos.y()+500,pos.x()-150,pos.y()+500);
-	scene->addLine(pos.x()-150,pos.y()+500,pos.x()-150,pos.y()+600);
+//	scene->addLine(pos.x()+150,pos.y()+400,pos.x()+150,pos.y()+500);
+//	scene->addLine(pos.x()+150,pos.y()+500,pos.x()-150,pos.y()+500);
+//	scene->addLine(pos.x()-150,pos.y()+500,pos.x()-150,pos.y()+600);
 }
 
 void MainWindow::addChild(TreeLeaf * parent)
@@ -142,18 +147,18 @@ void MainWindow::addChild(TreeLeaf * parent)
 	family[parent]->addChild(newPerson);
 	addPers(ppos, newPerson);
 
-	if (adult->getSex() == MALE)
-	{
-		scene->addLine(pos.x()+150,pos.y(),pos.x()+150,pos.y()-100);
-		scene->addLine(pos.x()+150,pos.y()-100,pos.x()-150,pos.y()-100);
-		scene->addLine(pos.x()-150,pos.y()-100,pos.x()-150,pos.y()-200);
-	}
-	else
-	{
-		scene->addLine(pos.x()+150,pos.y(),pos.x()+150,pos.y()-100);
-		scene->addLine(pos.x()+150,pos.y()-100,pos.x()+450,pos.y()-100);
-		scene->addLine(pos.x()+450,pos.y()-100,pos.x()+450,pos.y()-200);
-	}
+//	if (adult->getSex() == MALE)
+//	{
+//		scene->addLine(pos.x()+150,pos.y(),pos.x()+150,pos.y()-100);
+//		scene->addLine(pos.x()+150,pos.y()-100,pos.x()-150,pos.y()-100);
+//		scene->addLine(pos.x()-150,pos.y()-100,pos.x()-150,pos.y()-200);
+//	}
+//	else
+//	{
+//		scene->addLine(pos.x()+150,pos.y(),pos.x()+150,pos.y()-100);
+//		scene->addLine(pos.x()+150,pos.y()-100,pos.x()+450,pos.y()-100);
+//		scene->addLine(pos.x()+450,pos.y()-100,pos.x()+450,pos.y()-200);
+//	}
 
 
 }
@@ -166,11 +171,11 @@ TreeLeaf * MainWindow::addPers(QPointF pos, Person *newPerson)
 
 	QList<QGraphicsItem *> collide= scene->items(polyg);
 
-	if (collide.size()!=0)
-	{
-		for(auto i : collide)
-			i->setPos(i->x()-400,i->y());
-	}
+//	if (collide.size()!=0)
+//	{
+//		for(auto i : collide)
+//			i->setPos(i->x()-400,i->y());
+//	}
 	if (newPerson->set)
 	{
 		TreeLeaf * item = new TreeLeaf(newPerson->getName(),newPerson->getPhotoPath(), 0,0,this);
@@ -178,12 +183,40 @@ TreeLeaf * MainWindow::addPers(QPointF pos, Person *newPerson)
 		item->setFlag(QGraphicsItem::ItemSendsGeometryChanges);
 		items.push_back(item);
 		family.insert(item,newPerson);
+		leaves.insert(newPerson,item);
 		connect(item,SIGNAL(destroyed_leaf(TreeLeaf*)),this,SLOT(deleted_leaf(TreeLeaf*)));
 		connect(item,SIGNAL(addDad(TreeLeaf*)),this,SLOT(addFather(TreeLeaf*)));
 		connect(item,SIGNAL(addMom(TreeLeaf*)),this,SLOT(addMother(TreeLeaf*)));
 		connect(item,SIGNAL(addChild(TreeLeaf*)),this,SLOT(addChild(TreeLeaf*)));
 		connect(item,SIGNAL(showInfo(TreeLeaf*)),this,SLOT(showInformation(TreeLeaf*)));
+		connect(item,SIGNAL(moved(TreeLeaf*)),this,SLOT(leafMoved(TreeLeaf*)));
 		scene->addItem(item);
+
+		if (newPerson->dad() != nullptr)
+		{
+			QLineF line(item->btm(),leaves[newPerson->dad()]->top());
+			QGraphicsLineItem * nline = scene->addLine(line);
+			item->connections.push_back(nline);
+			leaves[newPerson->dad()]->connections.push_back(nline);
+		}
+
+		if (newPerson->mom() != nullptr)
+		{
+			QLineF line(item->btm(),leaves[newPerson->mom()]->top());
+			QGraphicsLineItem * nline = scene->addLine(line);
+			item->connections.push_back(nline);
+			leaves[newPerson->mom()]->connections.push_back(nline);
+		}
+
+		for(int i = 0; i < newPerson->children_num(); i++)
+		{
+			QLineF line(item->top(),leaves[newPerson->child(i)]->btm());
+			QGraphicsLineItem * nline = scene->addLine(line);
+			item->connections.push_back(nline);
+			leaves[newPerson->child(i)]->connections.push_back(nline);
+		}
+
+
 		return item;
 	}
 	return nullptr;
@@ -213,12 +246,20 @@ void MainWindow::createScene()
 	Person *  me = new Person(QDate(1992,6,12),tr("Силков Александр Андреевич"),tr("Создатель программы"),tr("Москва"),tr(":/me.jpg"),MALE);
 	addPers(QPointF(0,0),me);
 	Person *  dad = new Person(QDate(1970,10,24),tr("Силков Андрей Николаевич"),tr("Папа"),tr("Москва"),tr(":/dad.jpg"),MALE);
+	me->setFather(dad);
+	dad->addChild(me);
 	addPers(QPointF(300,600),dad);
 	Person *  mom = new Person(QDate(1971,7,29),tr("Силкова Светлана Сергеевна"),tr("Мама"),tr("Солнцево"),tr(":/mom.jpg"),FEMALE);
+	me->setMother(mom);
+	mom->addChild(me);
 	addPers(QPointF(-300,600),mom);
 	Person *  granm = new Person(QDate(1950,3,5),tr("Бабенко Любовь Тихоновна"),tr("Бабушка"),tr("Льгов"),tr(":/grandm.jpg"),FEMALE);
+	mom->setMother(granm);
+	granm->addChild(mom);
 	addPers(QPointF(-600,1200),granm);
 	Person *  grand = new Person(QDate(1900,1,1),QDate(1992,6,20),false,tr("Бабенко Сергей"),tr("Дедушка"),tr("Льгов"),tr(":/no_photo.jpg"),MALE);
+	mom->setFather(grand);
+	grand->addChild(mom);
 	addPers(QPointF(0,1200),grand);
 
 }
@@ -235,3 +276,72 @@ void MainWindow::saveFamily()
 
 //	ofile.close();
 }
+
+void MainWindow::moveTest()
+{
+	for(int i = 2; i < items.size(); i++)
+		items[i]->moveBy(-300,0);
+	items[1]->moveBy(300,0);
+	Person *  granm = new Person(QDate(1948,7,12),tr("Силкова Наталья Михайловна"),tr("Бабушка"),tr("Скопин"),tr(":/no_photo.jpg"),FEMALE);
+	addPers(QPointF(300,1200),granm);
+	Person *  grand = new Person(QDate(1948,7,8),QDate(1996,6,20),false,tr("Силков Николай Александрович"),tr("Дедушка"),tr("Скопин"),tr(":/no_photo.jpg"),MALE);
+	addPers(QPointF(900,1200),grand);
+	items[0]->setFlag(QGraphicsItem::ItemIsMovable);
+	items[0]->setFlag(QGraphicsItem::ItemIsSelectable);
+}
+
+void MainWindow::leafMoved(TreeLeaf * item)
+{
+//	QRectF topRect;
+//	topRect.setBottomLeft(item->top()+=QPoint(-50,-1));
+//	topRect.setTopRight(item->top()+=QPoint(50,-100));
+
+//	QList<QGraphicsItem *> collide= scene->items(topRect);
+
+//	for(auto it: collide)
+//		delete it;
+
+//	QRectF btmRect;
+//	btmRect.setBottomLeft(item->btm()+=QPoint(-50,100));
+//	btmRect.setTopRight(item->btm()+=QPoint(50,1));
+
+//	collide= scene->items(btmRect);
+
+//	for(auto it: collide)
+//		delete it;
+
+	for(auto it: item->connections)
+		scene->removeItem(it);
+
+	Person * curPerson = family[item];
+
+	if (curPerson->dad() != nullptr)
+	{
+		QLineF line(item->btm(),leaves[curPerson->dad()]->top());
+		QGraphicsLineItem * nline = scene->addLine(line);
+		item->connections.push_back(nline);
+		leaves[curPerson->dad()]->connections.push_back(nline);
+	}
+
+	if (curPerson->mom() != nullptr)
+	{
+		QLineF line(item->btm(),leaves[curPerson->mom()]->top());
+		QGraphicsLineItem * nline = scene->addLine(line);
+		item->connections.push_back(nline);
+		leaves[curPerson->mom()]->connections.push_back(nline);
+	}
+
+	for(int i = 0; i < curPerson->children_num(); i++)
+	{
+		QLineF line(item->top(),leaves[curPerson->child(i)]->btm());
+		QGraphicsLineItem * nline = scene->addLine(line);
+		item->connections.push_back(nline);
+		leaves[curPerson->child(i)]->connections.push_back(nline);
+	}
+
+
+}
+
+
+
+
