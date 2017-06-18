@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_MainWindow_t {
-    QByteArrayData data[14];
-    char stringdata0[140];
+    QByteArrayData data[15];
+    char stringdata0[146];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -42,14 +42,15 @@ QT_MOC_LITERAL(9, 85, 8), // "addChild"
 QT_MOC_LITERAL(10, 94, 15), // "showInformation"
 QT_MOC_LITERAL(11, 110, 10), // "saveFamily"
 QT_MOC_LITERAL(12, 121, 8), // "moveTest"
-QT_MOC_LITERAL(13, 130, 9) // "leafMoved"
+QT_MOC_LITERAL(13, 130, 9), // "leafMoved"
+QT_MOC_LITERAL(14, 140, 5) // "delta"
 
     },
     "MainWindow\0ShowContextMenu\0\0pos\0"
     "addPerson\0deleted_leaf\0TreeLeaf*\0"
     "addFather\0addMother\0addChild\0"
     "showInformation\0saveFamily\0moveTest\0"
-    "leafMoved"
+    "leafMoved\0delta"
 };
 #undef QT_MOC_LITERAL
 
@@ -76,7 +77,7 @@ static const uint qt_meta_data_MainWindow[] = {
       10,    1,   80,    2, 0x0a /* Public */,
       11,    0,   83,    2, 0x0a /* Public */,
       12,    0,   84,    2, 0x0a /* Public */,
-      13,    1,   85,    2, 0x0a /* Public */,
+      13,    2,   85,    2, 0x0a /* Public */,
 
  // slots: parameters
     QMetaType::Void, QMetaType::QPoint,    3,
@@ -88,7 +89,7 @@ static const uint qt_meta_data_MainWindow[] = {
     QMetaType::Void, 0x80000000 | 6,    2,
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void, 0x80000000 | 6,    2,
+    QMetaType::Void, 0x80000000 | 6, QMetaType::QPointF,    2,   14,
 
        0        // eod
 };
@@ -108,7 +109,7 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 6: _t->showInformation((*reinterpret_cast< TreeLeaf*(*)>(_a[1]))); break;
         case 7: _t->saveFamily(); break;
         case 8: _t->moveTest(); break;
-        case 9: _t->leafMoved((*reinterpret_cast< TreeLeaf*(*)>(_a[1]))); break;
+        case 9: _t->leafMoved((*reinterpret_cast< TreeLeaf*(*)>(_a[1])),(*reinterpret_cast< QPointF(*)>(_a[2]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {

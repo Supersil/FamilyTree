@@ -101,9 +101,10 @@ void TreeLeaf::changeInfo(Person * newPerson)
 QVariant TreeLeaf::itemChange(GraphicsItemChange change, const QVariant &value)
 {
 	if (change == ItemPositionChange && scene()) {
-		emit moved(this);
 		QPointF oldPos	= mapToScene(0,0);
 		QPointF newPos = value.toPointF();
+		QPointF delta(newPos.x() - oldPos.x(),newPos.y() - oldPos.y());
+		emit moved(this,delta);
 		int delta_y = newPos.y()/100;
 		delta_y -= (int)oldPos.y()/100;
 		if (delta_y !=0)

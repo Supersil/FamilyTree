@@ -17,12 +17,19 @@ public:
 	explicit MainWindow(QWidget *parent = 0);
 	~MainWindow();
 	void createScene();
+	bool ctrl();
+
 private:
 	QGraphicsScene * scene;
 	QVector<TreeLeaf *> items;
 	QMap<TreeLeaf *, Person *> family;
 	QMap<Person *, TreeLeaf *> leaves;
 	TreeLeaf * addPers(QPointF pos, Person * newPerson);
+	bool ctrlPressed;
+
+protected:
+	void keyPressEvent(QKeyEvent *);
+	void keyReleaseEvent(QKeyEvent *);
 
 public slots:
 	void ShowContextMenu(const QPoint& pos);
@@ -34,7 +41,7 @@ public slots:
 	void showInformation(TreeLeaf*);
 	void saveFamily();
 	void moveTest();
-	void leafMoved(TreeLeaf *);
+	void leafMoved(TreeLeaf *,QPointF delta);
 };
 
 #endif // MAINWINDOW_H

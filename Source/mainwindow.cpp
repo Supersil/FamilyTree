@@ -23,6 +23,7 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 	setWindowTitle(tr("Генеалогия"));
 	QIcon myIcon(":/tree.png");
 	setWindowIcon(myIcon);
+	ctrlPressed = false;
 }
 
 MainWindow::~MainWindow()
@@ -189,7 +190,7 @@ TreeLeaf * MainWindow::addPers(QPointF pos, Person *newPerson)
 		connect(item,SIGNAL(addMom(TreeLeaf*)),this,SLOT(addMother(TreeLeaf*)));
 		connect(item,SIGNAL(addChild(TreeLeaf*)),this,SLOT(addChild(TreeLeaf*)));
 		connect(item,SIGNAL(showInfo(TreeLeaf*)),this,SLOT(showInformation(TreeLeaf*)));
-		connect(item,SIGNAL(moved(TreeLeaf*)),this,SLOT(leafMoved(TreeLeaf*)));
+		connect(item,SIGNAL(moved(TreeLeaf*,QPointF)),this,SLOT(leafMoved(TreeLeaf*,QPointF)));
 		scene->addItem(item);
 
 		if (newPerson->dad() != nullptr)
@@ -290,7 +291,7 @@ void MainWindow::moveTest()
 	items[0]->setFlag(QGraphicsItem::ItemIsSelectable);
 }
 
-void MainWindow::leafMoved(TreeLeaf * item)
+void MainWindow::leafMoved(TreeLeaf * item, QPointF delta)
 {
 //	QRectF topRect;
 //	topRect.setBottomLeft(item->top()+=QPoint(-50,-1));
@@ -310,15 +311,48 @@ void MainWindow::leafMoved(TreeLeaf * item)
 //	for(auto it: collide)
 //		delete it;
 
-	for(auto it: item->connections)
-		scene->removeItem(it);
-
 	Person * curPerson = family[item];
+
+	QPen * pen;
+//	if (!ctrlPressed)
+		pen = new QPen(QBrush(QColor(0,0,0)),1);
+//	else
+//		pen = new QPen(QBrush(QColor(255,0,0)),3);
+
+
+	if (ctrlPressed)
+	{
+		if (curPerson->mom()!= nullptr)
+		{
+			leaves[curPerson->mom()]->changeMovability();
+			leaves[curPerson->mom()]->moveBy(delta.x(),delta.y());
+			leaves[curPerson->mom()]->changeMovability();
+		}
+
+		if (curPerson->dad()!= nullptr)
+		{
+			leaves[curPerson->dad()]->changeMovability();
+			leaves[curPerson->dad()]->moveBy(delta.x(),delta.y());
+			leaves[curPerson->dad()]->changeMovability();
+		}
+	}
+
+	for(auto it: item->connections)
+	{
+		scene->removeItem(it);
+		if (curPerson->dad() != nullptr)
+			leaves[curPerson->dad()]->connections.removeOne(it);
+		if (curPerson->mom() != nullptr)
+			leaves[curPerson->mom()]->connections.removeOne(it);
+		for(int i = 0; i < curPerson->children_num(); i++)
+			leaves[curPerson->child(i)]->connections.removeOne(it);
+	}
+	item->connections.clear();
 
 	if (curPerson->dad() != nullptr)
 	{
 		QLineF line(item->btm(),leaves[curPerson->dad()]->top());
-		QGraphicsLineItem * nline = scene->addLine(line);
+		QGraphicsLineItem * nline = scene->addLine(line,*pen);
 		item->connections.push_back(nline);
 		leaves[curPerson->dad()]->connections.push_back(nline);
 	}
@@ -326,7 +360,7 @@ void MainWindow::leafMoved(TreeLeaf * item)
 	if (curPerson->mom() != nullptr)
 	{
 		QLineF line(item->btm(),leaves[curPerson->mom()]->top());
-		QGraphicsLineItem * nline = scene->addLine(line);
+		QGraphicsLineItem * nline = scene->addLine(line,*pen);
 		item->connections.push_back(nline);
 		leaves[curPerson->mom()]->connections.push_back(nline);
 	}
@@ -334,14 +368,37 @@ void MainWindow::leafMoved(TreeLeaf * item)
 	for(int i = 0; i < curPerson->children_num(); i++)
 	{
 		QLineF line(item->top(),leaves[curPerson->child(i)]->btm());
-		QGraphicsLineItem * nline = scene->addLine(line);
+		QGraphicsLineItem * nline = scene->addLine(line,*pen);
 		item->connections.push_back(nline);
 		leaves[curPerson->child(i)]->connections.push_back(nline);
 	}
 
+//	delete pen;
 
 }
 
 
+void MainWindow::keyPressEvent(QKeyEvent * event)
+{
+	if (event->key() == Qt::Key_Control)
+	{
+		ctrlPressed = true;
+	}
+}
+
+
+void MainWindow::keyReleaseEvent(QKeyEvent * event)
+{
+	if (event->key() == Qt::Key_Control)
+	{
+		ctrlPressed = false;
+	}
+}
+
+
+bool MainWindow::ctrl()
+{
+	return ctrlPressed;
+}
 
 

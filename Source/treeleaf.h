@@ -36,7 +36,7 @@ signals:
 	void addMom(TreeLeaf*);
 	void addChild(TreeLeaf*);
 	void showInfo(TreeLeaf*);
-	void moved(TreeLeaf*);
+	void moved(TreeLeaf*,QPointF delta);
 
 private:
 	QString name;
