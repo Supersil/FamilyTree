@@ -37,7 +37,7 @@ signals:
 	void addChild(TreeLeaf*);
 	void showInfo(TreeLeaf*);
 	void moved(TreeLeaf*,QPointF delta);
-
+	void connectParent(TreeLeaf *);
 private:
 	QString name;
 	QImage photo;

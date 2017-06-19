@@ -48,7 +48,7 @@ void TreeLeaf::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 	replaceble->setChecked(movability);
 	connect(replaceble,SIGNAL(changed()),this,SLOT(changeMovability()));
 	menu.addAction(replaceble);//,this,SLOT(changeMovability()));
-
+	menu.addAction("Установить родительскую связь");
 	QAction *selectedAction = menu.exec(event->screenPos());
 	if (selectedAction)
 	{
@@ -60,6 +60,8 @@ void TreeLeaf::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 		emit addMom(this);
 	if (selectedAction->text().contains("ребенка"))
 		emit addChild(this);
+	if (selectedAction->text().contains("связь"))
+		emit connectParent(this);
 	}
 
 

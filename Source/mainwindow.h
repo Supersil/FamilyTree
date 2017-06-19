@@ -42,6 +42,8 @@ public slots:
 	void saveFamily();
 	void moveTest();
 	void leafMoved(TreeLeaf *,QPointF delta);
+	void connectLeaves(TreeLeaf *);
+
 };
 
 #endif // MAINWINDOW_H

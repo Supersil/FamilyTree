@@ -6,6 +6,7 @@
 #include <QPolygonF>
 #include <QFile>
 #include <QIcon>
+#include "parentconnectdlg.h"
 
 MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 {
@@ -75,6 +76,7 @@ void MainWindow::deleted_leaf(TreeLeaf * leaf)
 	}
 }
 
+
 void MainWindow::addFather(TreeLeaf * child)
 {
 	QPointF pos = child->pos();
@@ -90,12 +92,8 @@ void MainWindow::addFather(TreeLeaf * child)
 
 	createPerson->exec();
 	family[child]->setFather(newPerson);
-	TreeLeaf * father = addPers(ppos, newPerson);
-
-
-//	scene->addLine(pos.x()+150,pos.y()+400,pos.x()+150,pos.y()+500);
-//	scene->addLine(pos.x()+150,pos.y()+500,pos.x()+450,pos.y()+500);
-//	scene->addLine(pos.x()+450,pos.y()+500,pos.x()+450,pos.y()+600);
+	newPerson->addChild(family[child]);
+	addPers(ppos, newPerson);
 
 }
 
@@ -114,29 +112,15 @@ void MainWindow::addMother(TreeLeaf * child)
 
 	createPerson->exec();
 	family[child]->setMother(newPerson);
+	newPerson->addChild(family[child]);
 	addPers(ppos, newPerson);
 
-//	scene->addLine(pos.x()+150,pos.y()+400,pos.x()+150,pos.y()+500);
-//	scene->addLine(pos.x()+150,pos.y()+500,pos.x()-150,pos.y()+500);
-//	scene->addLine(pos.x()-150,pos.y()+500,pos.x()-150,pos.y()+600);
 }
 
 void MainWindow::addChild(TreeLeaf * parent)
 {
 	QPointF pos = parent->pos();
 	QPointF ppos;
-
-	Person* adult = family[parent];
-	if (adult->getSex() == MALE)
-	{
-		ppos.setX(pos.x()-300);
-		ppos.setY(pos.y()-600);
-	}
-	else
-	{
-		ppos.setX(pos.x()+300);
-		ppos.setY(pos.y()-600);
-	}
 
 	Info * createPerson = new Info;
 	Person * newPerson = new Person;
@@ -146,37 +130,48 @@ void MainWindow::addChild(TreeLeaf * parent)
 
 	createPerson->exec();
 	family[parent]->addChild(newPerson);
+
+	Person* adult = family[parent];
+	if (adult->getSex() == MALE)
+	{
+		ppos.setX(pos.x()-300);
+		ppos.setY(pos.y()-600);
+		newPerson->setFather(adult);
+	}
+	else
+	{
+		ppos.setX(pos.x()+300);
+		ppos.setY(pos.y()-600);
+		newPerson->setMother(adult);
+	}
+
 	addPers(ppos, newPerson);
-
-//	if (adult->getSex() == MALE)
-//	{
-//		scene->addLine(pos.x()+150,pos.y(),pos.x()+150,pos.y()-100);
-//		scene->addLine(pos.x()+150,pos.y()-100,pos.x()-150,pos.y()-100);
-//		scene->addLine(pos.x()-150,pos.y()-100,pos.x()-150,pos.y()-200);
-//	}
-//	else
-//	{
-//		scene->addLine(pos.x()+150,pos.y(),pos.x()+150,pos.y()-100);
-//		scene->addLine(pos.x()+150,pos.y()-100,pos.x()+450,pos.y()-100);
-//		scene->addLine(pos.x()+450,pos.y()-100,pos.x()+450,pos.y()-200);
-//	}
-
 
 }
 
 TreeLeaf * MainWindow::addPers(QPointF pos, Person *newPerson)
 {
 	QPolygonF polyg;
-	polyg << pos << pos + QPointF(300,0) <<
-			pos + QPoint(300,400) << pos + QPoint(0,400);
+	polyg << pos + QPointF(-100,100) << pos + QPointF(400,100) <<
+			pos + QPoint(400,300) << pos + QPoint(-100,300);
 
 	QList<QGraphicsItem *> collide= scene->items(polyg);
 
-//	if (collide.size()!=0)
-//	{
-//		for(auto i : collide)
-//			i->setPos(i->x()-400,i->y());
-//	}
+	if (collide.size()!=0)
+	{
+		ctrlPressed = true;
+		TreeLeaf * collider = (TreeLeaf * )collide[0];
+		TreeLeaf * child = leaves[family[collider]->child(0)];
+		child->changeMovability();
+		if (child->mapToScene(0,0).x() < pos.x())
+			child->moveBy(-400,0);
+		else
+			child->moveBy(400,0);
+		child->changeMovability();
+		ctrlPressed = false;
+
+	}
+
 	if (newPerson->set)
 	{
 		TreeLeaf * item = new TreeLeaf(newPerson->getName(),newPerson->getPhotoPath(), 0,0,this);
@@ -190,6 +185,7 @@ TreeLeaf * MainWindow::addPers(QPointF pos, Person *newPerson)
 		connect(item,SIGNAL(addMom(TreeLeaf*)),this,SLOT(addMother(TreeLeaf*)));
 		connect(item,SIGNAL(addChild(TreeLeaf*)),this,SLOT(addChild(TreeLeaf*)));
 		connect(item,SIGNAL(showInfo(TreeLeaf*)),this,SLOT(showInformation(TreeLeaf*)));
+		connect(item,SIGNAL(connectParent(TreeLeaf*)),this,SLOT(connectLeaves(TreeLeaf*)));
 		connect(item,SIGNAL(moved(TreeLeaf*,QPointF)),this,SLOT(leafMoved(TreeLeaf*,QPointF)));
 		scene->addItem(item);
 
@@ -280,36 +276,19 @@ void MainWindow::saveFamily()
 
 void MainWindow::moveTest()
 {
-	for(int i = 2; i < items.size(); i++)
-		items[i]->moveBy(-300,0);
-	items[1]->moveBy(300,0);
-	Person *  granm = new Person(QDate(1948,7,12),tr("Силкова Наталья Михайловна"),tr("Бабушка"),tr("Скопин"),tr(":/no_photo.jpg"),FEMALE);
-	addPers(QPointF(300,1200),granm);
-	Person *  grand = new Person(QDate(1948,7,8),QDate(1996,6,20),false,tr("Силков Николай Александрович"),tr("Дедушка"),tr("Скопин"),tr(":/no_photo.jpg"),MALE);
-	addPers(QPointF(900,1200),grand);
-	items[0]->setFlag(QGraphicsItem::ItemIsMovable);
-	items[0]->setFlag(QGraphicsItem::ItemIsSelectable);
+//	for(int i = 2; i < items.size(); i++)
+//		items[i]->moveBy(-300,0);
+//	items[1]->moveBy(300,0);
+//	Person *  granm = new Person(QDate(1948,7,12),tr("Силкова Наталья Михайловна"),tr("Бабушка"),tr("Скопин"),tr(":/no_photo.jpg"),FEMALE);
+//	addPers(QPointF(300,1200),granm);
+//	Person *  grand = new Person(QDate(1948,7,8),QDate(1996,6,20),false,tr("Силков Николай Александрович"),tr("Дедушка"),tr("Скопин"),tr(":/no_photo.jpg"),MALE);
+//	addPers(QPointF(900,1200),grand);
+//	items[0]->setFlag(QGraphicsItem::ItemIsMovable);
+//	items[0]->setFlag(QGraphicsItem::ItemIsSelectable);
 }
 
 void MainWindow::leafMoved(TreeLeaf * item, QPointF delta)
 {
-//	QRectF topRect;
-//	topRect.setBottomLeft(item->top()+=QPoint(-50,-1));
-//	topRect.setTopRight(item->top()+=QPoint(50,-100));
-
-//	QList<QGraphicsItem *> collide= scene->items(topRect);
-
-//	for(auto it: collide)
-//		delete it;
-
-//	QRectF btmRect;
-//	btmRect.setBottomLeft(item->btm()+=QPoint(-50,100));
-//	btmRect.setTopRight(item->btm()+=QPoint(50,1));
-
-//	collide= scene->items(btmRect);
-
-//	for(auto it: collide)
-//		delete it;
 
 	Person * curPerson = family[item];
 
@@ -320,23 +299,6 @@ void MainWindow::leafMoved(TreeLeaf * item, QPointF delta)
 //		pen = new QPen(QBrush(QColor(255,0,0)),3);
 
 
-	if (ctrlPressed)
-	{
-		if (curPerson->mom()!= nullptr)
-		{
-			leaves[curPerson->mom()]->changeMovability();
-			leaves[curPerson->mom()]->moveBy(delta.x(),delta.y());
-			leaves[curPerson->mom()]->changeMovability();
-		}
-
-		if (curPerson->dad()!= nullptr)
-		{
-			leaves[curPerson->dad()]->changeMovability();
-			leaves[curPerson->dad()]->moveBy(delta.x(),delta.y());
-			leaves[curPerson->dad()]->changeMovability();
-		}
-	}
-
 	for(auto it: item->connections)
 	{
 		scene->removeItem(it);
@@ -346,6 +308,7 @@ void MainWindow::leafMoved(TreeLeaf * item, QPointF delta)
 			leaves[curPerson->mom()]->connections.removeOne(it);
 		for(int i = 0; i < curPerson->children_num(); i++)
 			leaves[curPerson->child(i)]->connections.removeOne(it);
+		delete it;
 	}
 	item->connections.clear();
 
@@ -373,8 +336,26 @@ void MainWindow::leafMoved(TreeLeaf * item, QPointF delta)
 		leaves[curPerson->child(i)]->connections.push_back(nline);
 	}
 
-//	delete pen;
 
+	if (ctrlPressed)
+	{
+		if (curPerson->mom()!= nullptr)
+		{
+			leaves[curPerson->mom()]->changeMovability();
+			leaves[curPerson->mom()]->moveBy(delta.x(),delta.y());
+			leaves[curPerson->mom()]->changeMovability();
+		}
+
+		if (curPerson->dad()!= nullptr)
+		{
+			leaves[curPerson->dad()]->changeMovability();
+			leaves[curPerson->dad()]->moveBy(delta.x(),delta.y());
+			leaves[curPerson->dad()]->changeMovability();
+		}
+	}
+
+//	delete pen;
+	scene->update();
 }
 
 
@@ -402,3 +383,13 @@ bool MainWindow::ctrl()
 }
 
 
+void MainWindow::connectLeaves(TreeLeaf * item)
+{
+	QList<Person *> list;
+
+	for(auto leaf: items)
+		list.append(family[leaf]);
+
+	ParentConnectDlg dlg(list);
+	dlg.exec();
+}

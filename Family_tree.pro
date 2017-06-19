@@ -19,7 +19,8 @@ SOURCES +=  Source/family.cpp \
     Source/person.cpp \
     Source/treeleaf.cpp \
     Source/view.cpp \
-    Source/treestructure.cpp
+    Source/treestructure.cpp \
+    Source/parentconnectdlg.cpp
 
 HEADERS  += \
     Source/family.h \
@@ -29,7 +30,8 @@ HEADERS  += \
     Source/treeleaf.h \
     Source/view.h \
     treestructure.h \
-    Source/treestructure.h
+    Source/treestructure.h \
+    Source/parentconnectdlg.h
 
 RESOURCES += \
     Resource/resources.qrc
