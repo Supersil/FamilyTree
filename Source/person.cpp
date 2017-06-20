@@ -29,7 +29,9 @@ Person::Person(const Person &src)
 	id = new_id();
 	info = src.info;
 	birthPlace = src.birthPlace;
+   photoPath = src.photoPath;
 	set = true;
+   sex = src.sex;
 }
 
 Person::~Person()
@@ -181,7 +183,7 @@ void Person::save_pure(QString filename)
 {
 	QFile ofile;
 	ofile.setFileName(filename);
-	ofile.open(QIODevice::WriteOnly | QIODevice::Text);
+   ofile.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append);
 	if (!ofile.isOpen())
 	{
 		QMessageBox warning;
@@ -203,7 +205,8 @@ void Person::save_pure(QString filename)
 		/!info!\
 		Info...
 		\!info!/
-
+      Picture_width height format byteCount     OR  "NULL" if no photo;
+      Picture_data
 	*/
 
 	QTextStream out(&ofile);
@@ -220,9 +223,28 @@ void Person::save_pure(QString filename)
 	out << birthPlace << endl;
 	out << "/!info!\\" << endl;
 	out << info << endl;
-	out << "\\!info!/" << endl << endl;
+   out << "\\!info!/" << endl ;
 
-	ofile.close();
+   out << photoPath << endl<< endl;
+
+//   if (photoPath.contains("no_photo") || photoPath.size()==0)
+//      out << "NULL" << endl << endl;
+//   else
+//   {
+      QImage img(photoPath);
+
+//      out << img.width() << ' ' << img.height() << ' ' << (int)img.format() << ' ';
+//      int len = img.byteCount();
+//      out << len << endl;
+
+//      uchar * data = img.bits();
+
+//      for(int i = 0; i < len; i++)
+//         out << (int) data[i] << ' ';
+//      out << endl << endl;
+//   }
+
+   ofile.close();
 
 }
 

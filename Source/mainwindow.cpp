@@ -264,12 +264,15 @@ void MainWindow::createScene()
 
 void MainWindow::saveFamily()
 {
-	items[0]->setFlag(QGraphicsItem::ItemSendsGeometryChanges);
-	items[0]->moveBy(-100,-100);
 //	QFile ofile;
 //	ofile.setFileName(tr("output.dat"));
 //	ofile.open(QIODevice::WriteOnly);
-
+   QString path("family.dat");
+   QFile file;
+   file.setFileName(path);
+   file.remove();
+   for(auto it: items)
+      family[it]->save_pure(path);
 
 //	ofile.close();
 }
