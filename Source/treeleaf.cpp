@@ -106,12 +106,13 @@ QVariant TreeLeaf::itemChange(GraphicsItemChange change, const QVariant &value)
 		QPointF oldPos	= mapToScene(0,0);
 		QPointF newPos = value.toPointF();
 		QPointF delta(newPos.x() - oldPos.x(),newPos.y() - oldPos.y());
-		emit moved(this,delta);
+
 		int delta_y = newPos.y()/100;
 		delta_y -= (int)oldPos.y()/100;
 		if (delta_y !=0)
 			newPos.setY(oldPos.y());
-		return newPos;
+      emit moved(this,delta);
+      return newPos;
 	 }
 	 return QGraphicsItem::itemChange(change, value);
 }

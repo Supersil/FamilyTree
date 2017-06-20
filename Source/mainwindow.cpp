@@ -301,9 +301,34 @@ void MainWindow::leafMoved(TreeLeaf * item, QPointF delta)
 //	else
 //		pen = new QPen(QBrush(QColor(255,0,0)),3);
 
+   if (ctrlPressed)
+   {
+      if (curPerson->mom()!= nullptr)
+      {
+         leaves[curPerson->mom()]->changeMovability();
+         leaves[curPerson->mom()]->moveBy(delta.x(),delta.y());
+         leaves[curPerson->mom()]->changeMovability();
+      }
+
+      if (curPerson->dad()!= nullptr)
+      {
+         leaves[curPerson->dad()]->changeMovability();
+         leaves[curPerson->dad()]->moveBy(delta.x(),delta.y());
+         leaves[curPerson->dad()]->changeMovability();
+      }
+
+      for(int i = 0; i < curPerson->children_num(); i++)
+      {
+         ctrlPressed = false;
+         leaves[curPerson->child(i)]->changeMovability();
+         leaves[curPerson->child(i)]->moveBy(delta.x()/2,0);
+         leaves[curPerson->child(i)]->changeMovability();
+         ctrlPressed = true;
+      }
+   }
 
 	for(auto it: item->connections)
-	{
+   {
 		scene->removeItem(it);
 		if (curPerson->dad() != nullptr)
 			leaves[curPerson->dad()]->connections.removeOne(it);
@@ -317,7 +342,7 @@ void MainWindow::leafMoved(TreeLeaf * item, QPointF delta)
 
 	if (curPerson->dad() != nullptr)
 	{
-		QLineF line(item->btm(),leaves[curPerson->dad()]->top());
+      QLineF line(item->btm()+delta,leaves[curPerson->dad()]->top());
 		QGraphicsLineItem * nline = scene->addLine(line,*pen);
 		item->connections.push_back(nline);
 		leaves[curPerson->dad()]->connections.push_back(nline);
@@ -325,7 +350,7 @@ void MainWindow::leafMoved(TreeLeaf * item, QPointF delta)
 
 	if (curPerson->mom() != nullptr)
 	{
-		QLineF line(item->btm(),leaves[curPerson->mom()]->top());
+      QLineF line(item->btm()+delta,leaves[curPerson->mom()]->top());
 		QGraphicsLineItem * nline = scene->addLine(line,*pen);
 		item->connections.push_back(nline);
 		leaves[curPerson->mom()]->connections.push_back(nline);
@@ -333,29 +358,14 @@ void MainWindow::leafMoved(TreeLeaf * item, QPointF delta)
 
 	for(int i = 0; i < curPerson->children_num(); i++)
 	{
-		QLineF line(item->top(),leaves[curPerson->child(i)]->btm());
+      QLineF line(item->top()+delta,leaves[curPerson->child(i)]->btm());
 		QGraphicsLineItem * nline = scene->addLine(line,*pen);
 		item->connections.push_back(nline);
 		leaves[curPerson->child(i)]->connections.push_back(nline);
 	}
 
 
-	if (ctrlPressed)
-	{
-		if (curPerson->mom()!= nullptr)
-		{
-			leaves[curPerson->mom()]->changeMovability();
-			leaves[curPerson->mom()]->moveBy(delta.x(),delta.y());
-			leaves[curPerson->mom()]->changeMovability();
-		}
 
-		if (curPerson->dad()!= nullptr)
-		{
-			leaves[curPerson->dad()]->changeMovability();
-			leaves[curPerson->dad()]->moveBy(delta.x(),delta.y());
-			leaves[curPerson->dad()]->changeMovability();
-		}
-	}
 
 //	delete pen;
 	scene->update();
