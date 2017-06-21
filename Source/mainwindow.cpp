@@ -163,10 +163,18 @@ TreeLeaf * MainWindow::addPers(QPointF pos, Person *newPerson)
 		TreeLeaf * collider = (TreeLeaf * )collide[0];
 		TreeLeaf * child = leaves[family[collider]->child(0)];
 		child->changeMovability();
+
+
+
 		if (child->mapToScene(0,0).x() < pos.x())
-			child->moveBy(-400,0);
+		{
+			child->moveBy(-400 - collider->mapToScene(0,0).x() + pos.x(),0);
+		}
 		else
-			child->moveBy(400,0);
+		{
+
+			child->moveBy(400 + pos.x() - collider->mapToScene(0,0).x(),0);
+		}
 		child->changeMovability();
 		ctrlPressed = false;
 
@@ -293,6 +301,38 @@ void MainWindow::moveTest()
 void MainWindow::leafMoved(TreeLeaf * item, QPointF delta)
 {
 
+	QPolygonF polyg;
+	QPointF pos = item->mapToScene(0,0) + delta;
+	polyg << pos + QPointF(-100,100) << pos + QPointF(400,100) <<
+			pos + QPoint(400,300) << pos + QPoint(-100,300);
+
+	QList<QGraphicsItem *> collide= scene->items(polyg);
+	collide.removeOne(item);
+
+	if (collide.size()!=0)
+	{
+		ctrlPressed = true;
+		TreeLeaf * collider = (TreeLeaf * )collide[0];
+		TreeLeaf * child = leaves[family[collider]->child(0)];
+		child->changeMovability();
+
+
+
+		if (child->mapToScene(0,0).x() < pos.x())
+		{
+			child->moveBy(-400 - collider->mapToScene(0,0).x() + pos.x(),0);
+		}
+		else
+		{
+
+			child->moveBy(400 + pos.x() - collider->mapToScene(0,0).x(),0);
+		}
+		child->changeMovability();
+		ctrlPressed = false;
+
+	}
+
+
 	Person * curPerson = family[item];
 
 	QPen * pen;
@@ -317,14 +357,14 @@ void MainWindow::leafMoved(TreeLeaf * item, QPointF delta)
          leaves[curPerson->dad()]->changeMovability();
       }
 
-      for(int i = 0; i < curPerson->children_num(); i++)
-      {
-         ctrlPressed = false;
-         leaves[curPerson->child(i)]->changeMovability();
-         leaves[curPerson->child(i)]->moveBy(delta.x()/2,0);
-         leaves[curPerson->child(i)]->changeMovability();
-         ctrlPressed = true;
-      }
+//      for(int i = 0; i < curPerson->children_num(); i++)
+//      {
+//         ctrlPressed = false;
+//         leaves[curPerson->child(i)]->changeMovability();
+//         leaves[curPerson->child(i)]->moveBy(delta.x()/2,0);
+//         leaves[curPerson->child(i)]->changeMovability();
+//         ctrlPressed = true;
+//      }
    }
 
 	for(auto it: item->connections)
