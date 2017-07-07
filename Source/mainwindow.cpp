@@ -161,23 +161,29 @@ TreeLeaf * MainWindow::addPers(QPointF pos, Person *newPerson)
 	{
 		ctrlPressed = true;
 		TreeLeaf * collider = (TreeLeaf * )collide[0];
-		TreeLeaf * child = leaves[family[collider]->child(0)];
-		child->changeMovability();
 
-
-
-		if (child->mapToScene(0,0).x() < pos.x())
+		if (family[collider]->children_num()!=0)
 		{
-			child->moveBy(-400 - collider->mapToScene(0,0).x() + pos.x(),0);
-		}
-		else
-		{
+			TreeLeaf * child = leaves[family[collider]->child(0)];
+			child->changeMovability();
 
-			child->moveBy(400 + pos.x() - collider->mapToScene(0,0).x(),0);
+
+
+			if (child->mapToScene(0,0).x() < pos.x())
+			{
+				child->moveBy(-400 - collider->mapToScene(0,0).x() + pos.x(),0);
+			}
+			else
+			{
+
+				child->moveBy(400 + pos.x() - collider->mapToScene(0,0).x(),0);
+			}
+			child->changeMovability();
+
+
 		}
-		child->changeMovability();
+
 		ctrlPressed = false;
-
 	}
 
 	if (newPerson->set)
@@ -438,11 +444,32 @@ bool MainWindow::ctrl()
 
 void MainWindow::connectLeaves(TreeLeaf * item)
 {
+	leafToConnect = item;
+
 	QList<Person *> list;
 
 	for(auto leaf: items)
 		list.append(family[leaf]);
 
-	ParentConnectDlg dlg(list);
-	dlg.exec();
+	ParentConnectDlg* dlg = new ParentConnectDlg(list);
+	connect(dlg,SIGNAL(export_person(Person*)),this,SLOT(addConnection(Person*)));
+
+	dlg->exec();
+
+
 }
+
+void MainWindow::addConnection(Person * connector)
+{
+	if (connector->getSex()==MALE)
+		family[leafToConnect]->setFather(connector);
+	else
+		family[leafToConnect]->setMother(connector);
+	leafMoved(leafToConnect,QPointF(0,0));
+}
+
+
+
+
+
+

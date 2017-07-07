@@ -26,6 +26,7 @@ private:
 	QMap<Person *, TreeLeaf *> leaves;
 	TreeLeaf * addPers(QPointF pos, Person * newPerson);
 	bool ctrlPressed;
+	TreeLeaf * leafToConnect;
 
 protected:
 	void keyPressEvent(QKeyEvent *);
@@ -43,6 +44,7 @@ public slots:
 	void moveTest();
 	void leafMoved(TreeLeaf *,QPointF delta);
 	void connectLeaves(TreeLeaf *);
+	void addConnection(Person *);
 
 };
 
