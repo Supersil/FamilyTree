@@ -84,6 +84,7 @@ View::View(const QString &name, QWidget *parent)
 //	graphicsView->setMaximumSize(1000,600);
 
 	setupMatrix();
+	zoomSlider->setValue(180);
 }
 
 QGraphicsView *View::view() const
