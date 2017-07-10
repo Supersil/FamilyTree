@@ -27,6 +27,7 @@ private:
 	TreeLeaf * addPers(QPointF pos, Person * newPerson);
 	bool ctrlPressed;
 	TreeLeaf * leafToConnect;
+	TreeLeaf * findCommonChild(TreeLeaf * one, TreeLeaf * two);
 
 protected:
 	void keyPressEvent(QKeyEvent *);

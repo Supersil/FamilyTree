@@ -469,7 +469,10 @@ void MainWindow::addConnection(Person * connector)
 }
 
 
+TreeLeaf * MainWindow::findCommonChild(TreeLeaf *one, TreeLeaf *two)
+{
 
+}
 
 
 
